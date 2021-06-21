@@ -19,7 +19,7 @@ class Work extends CI_Model
 
 	public function getWork()
 	{
-		return $this->db->get_where('pekerjaan',['is_posted' => 1]);
+		return $this->db->get_where('pekerjaan');
 	}
 
 	public function show_Job($data = null)

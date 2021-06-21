@@ -43,7 +43,6 @@
                       ?>
                       <th class="text-center"><b>Nama Pekerjaan</th>
                       <th class="text-center"><b>Upah</th>
-                      <th class="text-center"><b>Uang makan</th>
                       <th class="text-center"><b>Biaya Admin</b></th>
                       <th class="text-center"><b>Total Biaya</th>
                       <?=
@@ -72,22 +71,21 @@
                             ?>
                           <td class="text-center"><?= $t['nama']; ?></td>
                           <td class="text-center"><?= $t['upah']; ?></td>
-                          <td class="text-center"><?= $t['uang_makan']; ?></td>
                           
                           <?php
-                            $sumUpah = $t['upah'] + $t['uang_makan'];
-                            $admin = 10/100;
+                            $sumUpah = $t['upah'];
+                            $admin = 30/100;
                             $biayaAdmin = $sumUpah * $admin;
                             $total = $biayaAdmin + $sumUpah;
 
-                            echo "<td class='text-center'> 10% = ".$biayaAdmin. "</td>";
+                            echo "<td class='text-center'> 30% = ".$biayaAdmin. "</td>";
                             echo "<td class='text-center'>".$total."</td>";
                           ?>
 
                           <?=
                           $role_id = $this->session->role_id == 1 ?
                             "<td class=text-center>" .$status = $t['bukti'] ? $bukti  : 'Belum ada' . "</td>" :
-                            "<td class=text-center>" . $status = $t['is_posted'] == 0 ? 'pending' : 'terpost' . "</td>";
+                            "<td class=text-center>" . $status = $t['is_posted'] == 0 ? 'pending' : 'post' . "</td>";
                           
                           ?>
                           <td class="td-actions text-center">
