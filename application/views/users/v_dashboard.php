@@ -15,7 +15,7 @@
         ?>
       </div>
     </div>
-    <div class="" lass="main-panel">
+    <div class="main-panel ps-container ps-theme-default" lass="main-panel">
     <!-- menu -->
     <?php $this->load->view('users/nav'); ?>
     <!-- end menu -->

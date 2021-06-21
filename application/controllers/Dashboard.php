@@ -1,7 +1,9 @@
 <?php defined('BASEPATH') or exit ('no direct script access allowed');
 
 class Dashboard extends CI_Controller{
-	public function __construct(){
+
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->model('Usermodel');
 		$this->load->model('Work');
@@ -10,7 +12,9 @@ class Dashboard extends CI_Controller{
 			redirect('login');
 		}
 	}
-	public function index(){
+
+	public function index()
+	{
 		$data['data'] = $this->Work->show_saldo($this->session->id);
 		
 		return $this->load->view('users/v_dashboard',$data);

@@ -52,6 +52,7 @@ class Admin extends CI_Controller{
 		
 		$get_data = $this->Work->showTrans();
 		$data['transaksi'] = $get_data;
+		$data['judul_table'] = 'Daftar Transaksi';
 		
 		$this->load->view('users/petani/transaksi',$data);
 	}

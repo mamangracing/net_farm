@@ -154,7 +154,7 @@ class Petani extends CI_Controller{
 				
 				$id_pekerjaan = $this->Work->save('pekerjaan',$data);
 
-				redirect('petani/detail_pekerjaan/'.$id_pekerjaan);
+				redirect('petani/daftar_pekerjaan');
 			}
 		}else{
 			$this->load->view('errors/403');
@@ -163,9 +163,8 @@ class Petani extends CI_Controller{
 
 	public function daftar_pekerjaan()
 	{
-		$get_data = $this->Work->showTrans($this->session->id);
 
-		$data['transaksi'] = $get_data;
+		$data['transaksi'] = $this->db->query('SELECT * FROM pekerjaan')->result_array();
 		$data['judul_table'] = 'Daftar Pekerjaan';
 
 		$this->load->view('users/petani/transaksi',$data);
@@ -231,24 +230,24 @@ class Petani extends CI_Controller{
 		}
 	}
 
-	public function transaksi(){
+	// public function transaksi(){
 		
-		$get_data = $this->Work->showTrans($this->session->id);
+	// 	$get_data = $this->Work->showTrans($this->session->id);
 
-		$data['transaksi'] = $get_data;
-		$data['judul_table'] = 'Daftar Transaksi';
+	// 	$data['transaksi'] = $get_data;
+	// 	$data['judul_table'] = 'Daftar Transaksi';
 
-		// foreach($get_data as $data){
-		// 	echo "<pre>";
-		// 	print_r($data);
-		// 	foreach ($data as $key => $value) {
-		// 		print_r($key .' => 	'.$value);	
-		// 	}
+	// 	// foreach($get_data as $data){
+	// 	// 	echo "<pre>";
+	// 	// 	print_r($data);
+	// 	// 	foreach ($data as $key => $value) {
+	// 	// 		print_r($key .' => 	'.$value);	
+	// 	// 	}
 		
-		// }
-		// die();
-		$this->load->view('users/petani/transaksi',$data);
-	}
+	// 	// }
+	// 	// die();
+	// 	$this->load->view('users/petani/transaksi',$data);
+	// }
 
 	public function delete_job($id_pekerjaan = null)
 	{

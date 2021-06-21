@@ -40,7 +40,7 @@ class Work extends CI_Model
 
 	public function showTrans($id = null)
 	{
-		$this->db->select('P.id_pekerjaan,U.nama as Pemosting,P.nama as Nama_pekerjaan,P.uang_makan,P.upah,P.is_posted,T.img_bukti as bukti,T.totalAmount as total,T.created_at');
+		$this->db->select('P.id_pekerjaan,U.nama as Pemosting,P.nama,P.uang_makan,P.upah,P.is_posted,T.img_bukti as bukti,T.totalAmount as total,T.created_at');
 		$this->db->from('pekerjaan P');
 		$this->db->join('trans_post T', 'P.id_pekerjaan = T.id_pekerjaan');
 		$this->db->join('users U', 'T.id_user = U.id_user');

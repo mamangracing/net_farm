@@ -41,21 +41,16 @@
               <p>Edit Profile</p>
             </a>
           </li>
-          <li class="nav-item dropdown <?php if($this->uri->segment(2) == 'posting'){ echo 'active';} ?>">
-            <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <li class="nav-item <?php if($this->uri->segment(2) == 'posting'){ echo 'active';} ?>">
+            <a class="nav-link" href="<?= base_url('petani/posting'); ?>">
               <i class="material-icons">work</i>
-              <p>Pekerjaan</p>
+              <p>Posting Pekerjaan</p>
             </a>
-
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="<?= base_url('petani/posting'); ?>">Posting Pekerjaan</a>
-              <a class="dropdown-item" href="<?= base_url('petani/daftar_pekerjaan');?>">Daftar Pekerjaan</a>
-            </div>
           </li>
           <li class="nav-item <?php if($this->uri->segment(2) == 'transaksi'){ echo 'active';} ?>">
-            <a class="nav-link" href="<?= base_url('petani/transaksi'); ?>">
+            <a class="nav-link" href="<?= base_url('petani/daftar_pekerjaan'); ?>">
               <i class="material-icons">assignment</i>
-              <p>Transaksi</p>
+              <p>Daftar Pekerjaan</p>
             </a>
           </li>
           

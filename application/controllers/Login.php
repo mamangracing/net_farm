@@ -86,7 +86,7 @@ class Login extends CI_Controller{
 			        	</div>');
 						}
 
-						redirect('dashboard');			
+						redirect('home');			
 					}
 
 				}else{

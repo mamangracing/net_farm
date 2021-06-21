@@ -44,6 +44,7 @@
                       <th class="text-center"><b>Nama Pekerjaan</th>
                       <th class="text-center"><b>Upah</th>
                       <th class="text-center"><b>Uang makan</th>
+                      <th class="text-center"><b>Biaya Admin</b></th>
                       <th class="text-center"><b>Total Biaya</th>
                       <?=
                       $role = $this->session->role_id == 1 ? '<th class="text-center"><b>Bukti</th>' : '<th class="text-center"><b>Status Postingan</th>';
@@ -56,7 +57,10 @@
                       <?php
                       $i = 1; 
                       foreach ($transaksi as $t) {
-                      $bukti = "<a href=" . base_url('assets/img/bukti/' . $t['bukti']) ."><img src=" . base_url('assets/img/bukti/' . $t['bukti']) ." style=width:59px></a>";
+                      
+                      if($this->session->role_id == 1){
+                        $bukti = "<a href=" . base_url('assets/img/bukti/' . $t['bukti']) ."><img src=" . base_url('assets/img/bukti/' . $t['bukti']) ." style=width:59px></a>";
+                      }
                       // print_r($bukti);
                       // die();  ?>
                         <tr>
@@ -66,10 +70,20 @@
                               echo '<td class="text-center">'. $t["Pemosting"] .'</td>';
                             } 
                             ?>
-                          <td class="text-center"><?= $t['Nama_pekerjaan']; ?></td>
+                          <td class="text-center"><?= $t['nama']; ?></td>
                           <td class="text-center"><?= $t['upah']; ?></td>
                           <td class="text-center"><?= $t['uang_makan']; ?></td>
-                          <td class="text-center"><?= $t['total']; ?></td>
+                          
+                          <?php
+                            $sumUpah = $t['upah'] + $t['uang_makan'];
+                            $admin = 10/100;
+                            $biayaAdmin = $sumUpah * $admin;
+                            $total = $biayaAdmin + $sumUpah;
+
+                            echo "<td class='text-center'> 10% = ".$biayaAdmin. "</td>";
+                            echo "<td class='text-center'>".$total."</td>";
+                          ?>
+
                           <?=
                           $role_id = $this->session->role_id == 1 ?
                             "<td class=text-center>" .$status = $t['bukti'] ? $bukti  : 'Belum ada' . "</td>" :
