@@ -10,10 +10,14 @@ class Petani extends CI_Controller{
 			redirect('login');
 		}
 	}
-	public function index(){
+
+	public function index()
+	{
 		return redirect('dashboard');
 	}
-	public function edit_profile(){
+
+	public function edit_profile()
+	{
 		if($this->session->role_id == '2'){
 			$user = $this->Usermodel->lookMember(['role_id' => 2, 'id_user' => $this->session->id]);
 			$arr = json_decode($user,true);
@@ -97,7 +101,9 @@ class Petani extends CI_Controller{
 			$this->load->view('errors/403');
 		}
 	}
-	public function posting(){
+
+	public function posting()
+	{
 		$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
 		$format_date = $date->format('Y-m-d h:i:s');
 		if($this->session->role_id == '2'){
@@ -154,17 +160,32 @@ class Petani extends CI_Controller{
 			$this->load->view('errors/403');
 		}
 	}
+
+	public function daftar_pekerjaan()
+	{
+		$get_data = $this->Work->showTrans($this->session->id);
+
+		$data['transaksi'] = $get_data;
+		$data['judul_table'] = 'Daftar Pekerjaan';
+
+		$this->load->view('users/petani/transaksi',$data);
+	}
+
 	public function detail_pekerjaan($id_pekerjaan)
 	{
 		if($this->session->role_id == '2'){
+
 		$get_pekerjaan = $this->db->where('id_pekerjaan', $id_pekerjaan)->get('pekerjaan')->row();
 		$detail['row'] = $get_pekerjaan; 
 		$this->load->view('users/petani/detail',$detail);
+
 		}else{
 			$this->load->view('errors/403');
 		}
 	}
-	public function up_bukti($id_pekerjaan){
+
+	public function up_bukti($id_pekerjaan)
+	{
 		if($this->session->role_id == 2){
 		$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
 		$format_date = $date->format('Y-m-d h:i:s');	
@@ -209,10 +230,14 @@ class Petani extends CI_Controller{
 			$this->load->view('errors/403');
 		}
 	}
+
 	public function transaksi(){
 		
 		$get_data = $this->Work->showTrans($this->session->id);
+
 		$data['transaksi'] = $get_data;
+		$data['judul_table'] = 'Daftar Transaksi';
+
 		// foreach($get_data as $data){
 		// 	echo "<pre>";
 		// 	print_r($data);
@@ -223,5 +248,27 @@ class Petani extends CI_Controller{
 		// }
 		// die();
 		$this->load->view('users/petani/transaksi',$data);
+	}
+
+	public function delete_job($id_pekerjaan = null)
+	{
+		$data = $this->Work->show_Job($id_pekerjaan);
+
+		if(count($data) == 1){
+
+			$this->db->query('DELETE FROM pekerjaan WHERE id_pekerjaan',$id_pekerjaan);
+			$this->db->query('DELETE FROM trans_getwork WHERE id_pekerjaan',$id_pekerjaan);
+			$this->db->query('DELETE FROM trans_post WHERE id_pekerjaan',$id_pekerjaan);
+
+			$this->session->set_flashdata('pesan','<div class="text-center alert alert-success alert-message" role="alert">Pekerjaan berhasil dihapus !! </div>');
+
+			redirec('petani/transaksi');
+
+		} else {
+
+			$this->session->set_flashdata('pesan','<div class="text-center alert alert-danger alert-message" role="alert">Pekerjaan belum dipost !!</div>');
+
+			redirect('petani/transaksi');
+		}
 	}
 }

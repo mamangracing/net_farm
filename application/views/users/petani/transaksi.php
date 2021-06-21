@@ -26,7 +26,7 @@
             <div class="col-lg-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">Daftar Transaksi</h4>
+                  <h4 class="card-title"><?= $judul_table;?></h4>
                   <p class="card-category">Di perbarui pada <script>
           document.write(new Date().toLocaleString("en-GB", {timeZone: "Asia/Jakarta"})); 
         </script></p>
@@ -89,7 +89,7 @@
                             <a href="<?= base_url('petani/edit_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" <?= $t['is_posted'] == 1 ? 'class="btn btn-success disabled"' : 'class="btn btn-success" title="Edit"'?>>
                               <i class="material-icons">check_circle</i>
                             </a>
-                            <a href="#" rel="tooltip" class="btn btn-danger delete_user" data-toggle="tooltip" data-placement="top" title="Hapus Post">
+                            <a href="<?= base_url('petani/delete_job/'.$t['id_pekerjaan']);?>" rel="tooltip" class="btn btn-danger delete_user" data-toggle="tooltip" data-placement="top" title="Hapus Post">
                                     <i class="material-icons">close</i>
                                 </a>
                             <?php }?>

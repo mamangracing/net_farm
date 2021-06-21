@@ -15,7 +15,7 @@
         ?>
       </div>
     </div>
-    <div class="main-panel">
+    <div class="" lass="main-panel">
     <!-- menu -->
     <?php $this->load->view('users/nav'); ?>
     <!-- end menu -->
@@ -37,7 +37,7 @@
             <script>
               document.write(new Date().getFullYear())
             </script>, Coded with <i class="material-icons">favorite</i> by
-            <a href="https://heartscode.net" target="_blank">Idiot Team</a> 
+            <a href="https://heartscode.net" target="_blank">Team Hore</a> 
           </div>
         </div>
       </footer>

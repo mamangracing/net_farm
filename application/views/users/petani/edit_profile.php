@@ -73,7 +73,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="fileinput">
-                          <input type="file" class="form-Ganti poto" name="image" id="img">
+                          <input type="file" class="form-control" name="image" id="img">
                         </div>
                       </div>
                     </div>

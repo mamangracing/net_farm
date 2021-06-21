@@ -18,11 +18,11 @@ class Home extends CI_Controller{
 	}
 
 	public function visi(){
-		echo "ANJING";
+		echo "Tanam tanam ubi";
 	}
 
 	public function Tentang_netfarm(){
-		echo "Bangsat";
+		echo "Tak perlu di baje";
 			
 	}
 
