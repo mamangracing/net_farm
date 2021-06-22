@@ -54,7 +54,6 @@
                             <ul class="text-left list-group">
                               <li>tipe kerja : <?= $post['tipe_kerja']; ?></li>
                               <li>Upah : <?= $post['upah']; ?></li>
-                              <li>Uang makan : <?= $um = $post['uang_makan'] == 0 ? "tidak ada" : $post['uang_makan']; ?></li>
                               <li>Batas waktu kerja : <?= $date->format('d/m/Y'); ?></li>
                               
                               <li>lokasi : <?= substr($post['lokasi'], 0,17); ?>...  <a href="https://www.google.com/maps/search/?api=1&query=<?= $post['lokasi']; ?>" class="btn-fab btn-fab-mini btn-round" data-toggle="tooltip" data-placement="top" title="Lihat di Gmaps"><i class="material-icons">pageview</i></a></li>

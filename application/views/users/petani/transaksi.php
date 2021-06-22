@@ -1,7 +1,5 @@
 <?php $this->load->view('users/head.php'); ?>
 
-
-
 <body class="">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="<?= base_url('assets/'); ?>/dash/img/sidebar-1.jpg">
@@ -70,16 +68,16 @@
                             } 
                             ?>
                           <td class="text-center"><?= $t['nama']; ?></td>
-                          <td class="text-center"><?= $t['upah']; ?></td>
+                          <td class="text-center"><?= "Rp " . number_format($t['upah'], 0, ',','.'); ?></td>
                           
                           <?php
                             $sumUpah = $t['upah'];
                             $admin = 30/100;
                             $biayaAdmin = $sumUpah * $admin;
-                            $total = $biayaAdmin + $sumUpah;
+                            $total = $sumUpah - $biayaAdmin;
 
-                            echo "<td class='text-center'> 30% = ".$biayaAdmin. "</td>";
-                            echo "<td class='text-center'>".$total."</td>";
+                            echo "<td class='text-center'> 30% = Rp ". number_format($biayaAdmin,0,',','.'). "</td>";
+                            echo "<td class='text-center'>Rp ". number_format($total,0,',','.')."</td>";
                           ?>
 
                           <?=
@@ -92,18 +90,27 @@
                           <?php if($this->session->role_id == 1){?>
 
                             <a href="#" rel="tooltip" class="btn btn-info" data-toggle="tooltip" data-placement="top"  title="lihat profil pemosting">
-                                    <i class="material-icons">person</i>
-                                </a>
+                              <i class="material-icons">person</i>
+                            </a>
+
                             <a href="<?= base_url('admin/acc/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" <?= $t['is_posted'] == 1 ? 'class="btn btn-success disabled"' : 'class="btn btn-success" title="Acc"'?>>
                                 <i class="material-icons">check_circle</i>
                             </a>
+
                           <?php }else{ ?>
-                            <a href="<?= base_url('petani/edit_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" <?= $t['is_posted'] == 1 ? 'class="btn btn-success disabled"' : 'class="btn btn-success" title="Edit"'?>>
-                              <i class="material-icons">check_circle</i>
+                            
+                            <a href="<?= base_url('petani/edit_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" class="btn btn-primary" title="Edit">
+                              <i class="material-icons">edit</i>
                             </a>
+
+                            <?php if($post == null ){ ?>
+                            <a href="<?= base_url("petani/detail_pekerjaan/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" class="btn btn-success" title="Edit">
+                              <i class="material-icons">upload</i>
+                            </a> <?php } else {} ?>
+
                             <a href="<?= base_url('petani/delete_job/'.$t['id_pekerjaan']);?>" rel="tooltip" class="btn btn-danger delete_user" data-toggle="tooltip" data-placement="top" title="Hapus Post">
-                                    <i class="material-icons">close</i>
-                                </a>
+                              <i class="material-icons">close</i>
+                            </a>
                             <?php }?>
                           </td>
                         </tr>

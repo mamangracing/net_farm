@@ -106,19 +106,31 @@ class Petani extends CI_Controller{
 	{
 		$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
 		$format_date = $date->format('Y-m-d h:i:s');
+
 		if($this->session->role_id == '2'){
+
 			$this->form_validation->set_rules('nama','Nama','required|trim|min_length[9]', [
 				'required' => 'Nama tidak boleh kosong',
 				'min_length' => 'Nama gak boleh kurang dari 9']);
+
 			$this->form_validation->set_rules('batas','batas waktu','required|trim',[
 				'required' => 'batas waktu harus di isi']);
+
 			$this->form_validation->set_rules('lokasi','Lokasi','required|trim',[
 				'required' => 'Lokasi harus di isi']);
+
+			$this->form_validation->set_rules('juru','Juru','required|trim',[
+				'required' => 'Panjang juru harus diisi']);
+
+
 			if($this->form_validation->run() == false){
+
 				$this->load->view('users/petani/posting');
+
 			}else{
+
 				$nm = $this->input->post('nama');
-				$um = $this->input->post('um');
+				$juru = $this->input->post('juru');
 				$tgl = $this->input->post('batas');
 				$upah = $this->input->post('upah');
 				$lokasi = $this->input->post('lokasi');
@@ -135,18 +147,20 @@ class Petani extends CI_Controller{
 					$config['file_name'] = 'img_' . time();
 
 					$this->load->library('upload', $config);
+
 					if($this->upload->do_upload('image')){
 						$nm_gambar = $this->upload->data('file_name');
 						
 					}
 				}
+
 				$data = [
 					'nama' => $nm,
-					'uang_makan' => $um,
+					'juru' => $juru,
 					'batas_waktu' => $tgl,
 					'upah' => $upah,
 					'lokasi' => $lokasi,
-					'tipe_kerja' => $type,
+					'tipe_kerja' => 'harian',
 					'gambar' => $nm_gambar,
 					'is_posted' => 0,
 					'created_at' => $format_date
@@ -154,10 +168,52 @@ class Petani extends CI_Controller{
 				
 				$id_pekerjaan = $this->Work->save('pekerjaan',$data);
 
+				$this->session->set_flashdata('pesan','<div class="alert alert-message text-center alert-success" role="alert">Silahkan lengkapi pembayaran !!</div>');
+
 				redirect('petani/daftar_pekerjaan');
 			}
+
 		}else{
+
 			$this->load->view('errors/403');
+		}
+	}
+
+	public function delete_job($id_pekerjaan = null)
+	{
+		$data = $this->Work->show_Job($id_pekerjaan);
+
+		if(count($data) == 1){
+
+			$this->db->query('DELETE FROM pekerjaan WHERE id_pekerjaan',$id_pekerjaan);
+			$this->db->query('DELETE FROM trans_getwork WHERE id_pekerjaan',$id_pekerjaan);
+			$this->db->query('DELETE FROM trans_post WHERE id_pekerjaan',$id_pekerjaan);
+
+			$this->session->set_flashdata('pesan','<div class="text-center alert alert-success alert-message" role="alert">Pekerjaan berhasil dihapus !! </div>');
+
+			redirect('petani/daftar_pekerjaan');
+
+		} else {
+
+			$this->session->set_flashdata('pesan','<div class="text-center alert alert-danger alert-message" role="alert">Pekerjaan belum dipost !!</div>');
+
+			redirect('petani/transaksi');
+		}
+	}
+
+	public function edit_post($id_pekerjaan = null)
+	{
+		$data = $this->Work->show_Job($id_pekerjaan);
+
+		if(count($data) == 1){
+
+			$this->load->view('users/petani/posting',$data);
+		
+		} else {
+
+			$this->session->set_flashdata('pesan','<div class="alert alert-danger alert-message text-center" role="alert">Pekerjaan belum di post !!</div>');
+
+			redirect('petani/daftar_pekerjaan');
 		}
 	}
 
@@ -165,6 +221,7 @@ class Petani extends CI_Controller{
 	{
 
 		$data['transaksi'] = $this->db->query('SELECT * FROM pekerjaan')->result_array();
+		$data['post'] = $this->db->query('SELECT * FROM pekerjaan INNER JOIN trans_post ON pekerjaan.id_pekerjaan = trans_post.id_pekerjaan')->result_array();
 		$data['judul_table'] = 'Daftar Pekerjaan';
 
 		$this->load->view('users/petani/transaksi',$data);
@@ -176,6 +233,7 @@ class Petani extends CI_Controller{
 
 		$get_pekerjaan = $this->db->where('id_pekerjaan', $id_pekerjaan)->get('pekerjaan')->row();
 		$detail['row'] = $get_pekerjaan; 
+
 		$this->load->view('users/petani/detail',$detail);
 
 		}else{
@@ -186,11 +244,12 @@ class Petani extends CI_Controller{
 	public function up_bukti($id_pekerjaan)
 	{
 		if($this->session->role_id == 2){
+
 		$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
 		$format_date = $date->format('Y-m-d h:i:s');	
 		$get_data = $this->db->get_where('pekerjaan',['id_pekerjaan' => $id_pekerjaan])->row();
-		$by_admin = $get_data->uang_makan + $get_data->upah * 10/100;
-		$total = $get_data->uang_makan + $get_data->upah + $by_admin;
+		$by_admin = $get_data->upah * 30/100;
+		$total = $get_data->upah + $by_admin;
 
 		$file = $_FILES['image']['name'];
 
@@ -203,9 +262,11 @@ class Petani extends CI_Controller{
 			$config['file_name'] = 'img_' . time();
 
 			$this->load->library('upload', $config);
+
 			if($this->upload->do_upload('image')){
 				$nm_gambar = $this->upload->data('file_name');
 			}
+
 			$data = [
 				'id_user' => $this->session->id,
 				'img_bukti' => $nm_gambar,
@@ -215,6 +276,7 @@ class Petani extends CI_Controller{
 			];
 
 			$this->Work->saveTrans($data);
+
 			$this->session->set_flashdata('notif','
 					<div class="alert alert-success alert-with-icon alert-message" data-notify="container">
 			          <i class="material-icons" data-notify="icon">add_alert</i>
@@ -248,26 +310,4 @@ class Petani extends CI_Controller{
 	// 	// die();
 	// 	$this->load->view('users/petani/transaksi',$data);
 	// }
-
-	public function delete_job($id_pekerjaan = null)
-	{
-		$data = $this->Work->show_Job($id_pekerjaan);
-
-		if(count($data) == 1){
-
-			$this->db->query('DELETE FROM pekerjaan WHERE id_pekerjaan',$id_pekerjaan);
-			$this->db->query('DELETE FROM trans_getwork WHERE id_pekerjaan',$id_pekerjaan);
-			$this->db->query('DELETE FROM trans_post WHERE id_pekerjaan',$id_pekerjaan);
-
-			$this->session->set_flashdata('pesan','<div class="text-center alert alert-success alert-message" role="alert">Pekerjaan berhasil dihapus !! </div>');
-
-			redirec('petani/transaksi');
-
-		} else {
-
-			$this->session->set_flashdata('pesan','<div class="text-center alert alert-danger alert-message" role="alert">Pekerjaan belum dipost !!</div>');
-
-			redirect('petani/transaksi');
-		}
-	}
 }

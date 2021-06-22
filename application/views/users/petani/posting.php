@@ -22,7 +22,7 @@
                 <p class="card-category">Silahkan Lengkapi Form Tertera</p>
               </div>
               <div class="card-body">
-                <?= form_open_multipart('petani/posting'); ?>
+                <?= form_open_multipart('petani/posting');?>
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
@@ -42,28 +42,20 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Tipe kerja</label>
-                        <select class="form-control" name="tipe" required="">
-                          <option value="harian" selected>harian</option>
-                          <option value="borongan">borongan</option>
-                        </select>
+                        <label class="bmd-label-static">*Panjang Ladang</label>
+                        <input name="juru" id="juru" class="form-control" type="number" min="1" onchange="(this.value)" onkeypress="return isNumberKey(event)" placeholder="juru">
+                        <?= form_error('juru','<small class="text-danger pl-3 alert-message">','</small>');?>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-floating">*Upah</label>
-                        <input type="text" class="form-control" name="upah" required="">
+                        <input type="text" class="form-control" name="upah" id="upah" required="">
                       </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
-                      <div class="form-group">
-                        <label class="bmd-label-floating">Uang makan</label>
-                        <input type="number" class="form-control" name="um">
-                      </div>
-                    </div>
-                  <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-floating">*Lokasi</label>
                         <input type="text" class="form-control" name="lokasi" required="">
@@ -93,6 +85,15 @@
     </div>
   </div>
 </body>
+
+<script>
+  
+  let juru = document.getElementById('juru').value;
+  let upah = document.getElementById('upah');  
+
+  console.log(juru);
+</script>
+
 <!-- <script type="text/javascript">
   $(function () {
   $('.datetimepicker').datetimepicker({

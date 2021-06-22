@@ -55,7 +55,6 @@
                           <tr>
                             <th>Nama Pekerjaan</th>
                             <th>Type kerja</th>
-                            <th>Uang Makan</th>
                             <th>Upah</th>
                             <th>Biaya Admin</th>
                             <th>Total</th>
@@ -65,16 +64,16 @@
                           <tr>
                             <td><?= $row->nama; ?></td>
                             <td><?= $row->tipe_kerja; ?></td>
-                            <td><?= $row->uang_makan; ?></td>
-                            <td><?= $row->upah; ?></td>
+                            <td><?= "Rp " . number_format($row->upah,0,',','.'); ?></td>
                             <?php 
-                            $by_admin = 10/100; //10% dari total uang makan+upah
-                            $sumUpah = $row->uang_makan + $row->upah;
+                            $by_admin = 30/100; //10% dari total uang makan+upah
+                            $sumUpah = $row->upah;
                             $biaya_admin = $by_admin * $sumUpah;
+                            $total = $sumUpah - $biaya_admin;
 
                             ?>
-                            <td>10% = <?= $biaya_admin; ?></td>
-                            <td><?= $sumUpah + $biaya_admin; ?></td>
+                            <td>30% = <?= "Rp " . number_format($biaya_admin,0,',','.'); ?></td>
+                            <td><?= "Rp " . number_format($total,0,',','.'); ?></td>
                           </tr>
                           <tr>
                             <td colspan="6">

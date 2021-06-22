@@ -8,7 +8,7 @@
                     <i class="material-icons">account_balance_wallet</i>
                   </div>
                   <p class="card-category">Saldo Sa'at ini</p>
-                  <h3 class="card-title"><?php $saldo = $data->uang_makan+$data->upah; echo number_format_short($saldo); ?></h3>
+                  <h3 class="card-title"><?php $saldo = $data->upah; echo number_format_short($saldo); ?></h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
