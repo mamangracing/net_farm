@@ -89,7 +89,7 @@
                           <td class="td-actions text-center">
                           <?php if($this->session->role_id == 1){?>
 
-                            <a href="#" rel="tooltip" class="btn btn-info" data-toggle="tooltip" data-placement="top"  title="lihat profil pemosting">
+                            <a href="<?= base_url('admin/prof_petani/'.$t['id_user']);?>" rel="tooltip" class="btn btn-info" data-toggle="tooltip" data-placement="top"  title="lihat profil pemosting">
                               <i class="material-icons">person</i>
                             </a>
 
@@ -103,11 +103,10 @@
                               <i class="material-icons">edit</i>
                             </a>
 
-                            <?php if($post == null ){ ?>
                             <a href="<?= base_url("petani/detail_pekerjaan/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" class="btn btn-success" title="Edit">
                               <i class="material-icons">upload</i>
-                            </a> <?php } else {} ?>
-
+                            </a>
+                  
                             <a href="<?= base_url('petani/delete_job/'.$t['id_pekerjaan']);?>" rel="tooltip" class="btn btn-danger delete_user" data-toggle="tooltip" data-placement="top" title="Hapus Post">
                               <i class="material-icons">close</i>
                             </a>

@@ -9,28 +9,15 @@ class Usermodel extends CI_Model{
 		return $json;
 	}
 
-	public function simpan_petani($data = null)
+	public function save_users($data = null)
 	{
-		return $this->db->insert('petani', $data);
+		return $this->db->insert('users', $data);
 	}
 
-	public function simpan_buruh($data = null)
+	public function UpdateData($where, $data)
 	{
-		return $this->db->insert('buruh', $data);
-	}
-
-	public function UpdateData($id = null)
-	{
-		$name = $this->input->post('nama');
-		$email = $this->input->post('email');
-		$nohp = $this->input->post('nohp');
-		$this->db->set('nama', $name);
-		$this->db->set('email', $email);
-		$this->db->set('nohp', $nohp);
-		$this->db->where('id', $id);
-		$result = $this->db->update('users');
-		return $result;
-
+		$this->db->where($where);
+		return $this->db->update('users',$data);
 	}
 
 	public function hapusData($where = null)

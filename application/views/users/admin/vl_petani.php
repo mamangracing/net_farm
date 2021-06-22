@@ -1,7 +1,5 @@
 <?php $this->load->view('users/head.php'); ?>
 
-
-
 <body class="">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="<?= base_url('assets/'); ?>/dash/img/sidebar-1.jpg">
@@ -22,6 +20,7 @@
       <div class="content">
       	<div class="container-fluid">
       		<div class="row">
+            <div class="col-xl-12"><?= $this->session->flashdata('pesan');?></div>
       			<div class="col-lg-12">
       				<div class="card">
 	      				<div class="card-header card-header-success">
@@ -52,9 +51,9 @@
 			      							<td><?= $value['nohp']; ?></td>
 			      							<td><?= $value['rekening']; ?></td>
 			      							<td class="td-actions">
-			      								<button type="button" rel="tooltip" class="btn btn-info">
+			      								<a rel="tooltip" href="<?= base_url('admin/prof_petani/'.$value['id_user']);?>" class="btn btn-info">
 								                    <i class="material-icons">person</i>
-								                </button>
+								                </a>
 								                <button type="button" rel="tooltip" class="btn btn-success" data-target="#ModalEdit<?= $value['id_user']; ?>" data-toggle="modal">
 								                    <i class="material-icons">edit</i>
 								                </button>

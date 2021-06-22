@@ -4,8 +4,8 @@ defined('BASEPATH') or exit ('no direct script access allowed');
 class Daftar extends CI_Controller{
 
 	public function __construct(){
-		
 		parent::__construct();
+		$this->load->model('Usermodel');
 	}
 
 	public function index(){
@@ -60,8 +60,7 @@ class Daftar extends CI_Controller{
 					'is_active' => 1
 				];
 
-				$this->load->model('Usermodel');
-				$this->Usermodel->simpan_petani($data);
+				$this->Usermodel->save_users($data);
 				
 				$this->session->set_flashdata('pesan','<div class="alert alert-success alert-message" role="alert">Selamat akun anda berhasil di buat !!</div>');
 

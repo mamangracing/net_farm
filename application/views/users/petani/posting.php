@@ -43,23 +43,14 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-static">*Panjang Ladang</label>
-                        <input name="juru" id="juru" class="form-control" type="number" min="1" onchange="(this.value)" onkeypress="return isNumberKey(event)" placeholder="juru">
+                        <input name="juru" id="juru" class="form-control" type="number" min="1" max="100" onchange="sum();" placeholder="juru">
                         <?= form_error('juru','<small class="text-danger pl-3 alert-message">','</small>');?>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label class="bmd-label-floating">*Upah</label>
-                        <input type="text" class="form-control" name="upah" id="upah" required="">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label class="bmd-label-floating">*Lokasi</label>
-                        <input type="text" class="form-control" name="lokasi" required="">
-                        <?= form_error('lokasi','<small class="text-danger pl-3 alert-message">','</small>'); ?>
+                        <label class="bmd-label-static">*Upah</label>
+                        <input type="text" class="form-control" name="upah" id="upah" readonly>
                       </div>
                     </div>
                   </div>
@@ -88,10 +79,28 @@
 
 <script>
   
-  let juru = document.getElementById('juru').value;
-  let upah = document.getElementById('upah');  
+  function sum(){
+    let juru = document.getElementById('juru').value;
+    let result = parseInt(juru) * 285000; 
 
-  console.log(juru);
+    let number = result.toString();
+    let sisa = number.length % 3;
+    let rupiah = number.substr(0, sisa);
+    let ribuan = number.substr(sisa).match(/\d{3}/g);
+
+    if(ribuan){
+      separator = sisa ? '.' : '';
+      rupiah += separator + ribuan.join('.');
+    }
+
+    if(!isNaN(result)){
+      document.getElementById('upah').value = "Rp " + rupiah;
+    }
+
+    if(juru == 100){
+      document.getElementById('juru').value = 100;
+    }
+  }
 </script>
 
 <!-- <script type="text/javascript">

@@ -47,7 +47,7 @@
               <p>Posting Pekerjaan</p>
             </a>
           </li>
-          <li class="nav-item <?php if($this->uri->segment(2) == 'transaksi'){ echo 'active';} ?>">
+          <li class="nav-item <?php if($this->uri->segment(2) == 'daftar_pekerjaan'){ echo 'active';} ?>">
             <a class="nav-link" href="<?= base_url('petani/daftar_pekerjaan'); ?>">
               <i class="material-icons">assignment</i>
               <p>Daftar Pekerjaan</p>
@@ -56,7 +56,7 @@
           
           <!-- menu untuk mitra/buruh tani -->
           <?php else: ?>
-            <li class="nav-item <?php if($this->uri->segment(2) == 'riwayat'){ echo 'active';} ?>">
+          <li class="nav-item <?php if($this->uri->segment(2) == 'riwayat'){ echo 'active';} ?>">
             <a class="nav-link" href="<?= base_url('mitra/riwayat'); ?>">
               <i class="material-icons">assignment</i>
               <p>Riwayat Kerja</p>

@@ -116,9 +116,6 @@ class Petani extends CI_Controller{
 			$this->form_validation->set_rules('batas','batas waktu','required|trim',[
 				'required' => 'batas waktu harus di isi']);
 
-			$this->form_validation->set_rules('lokasi','Lokasi','required|trim',[
-				'required' => 'Lokasi harus di isi']);
-
 			$this->form_validation->set_rules('juru','Juru','required|trim',[
 				'required' => 'Panjang juru harus diisi']);
 
@@ -133,7 +130,6 @@ class Petani extends CI_Controller{
 				$juru = $this->input->post('juru');
 				$tgl = $this->input->post('batas');
 				$upah = $this->input->post('upah');
-				$lokasi = $this->input->post('lokasi');
 				$type = $this->input->post('tipe');
 
 				$up_gambar = $_FILES['image']['name'];
@@ -159,7 +155,6 @@ class Petani extends CI_Controller{
 					'juru' => $juru,
 					'batas_waktu' => $tgl,
 					'upah' => $upah,
-					'lokasi' => $lokasi,
 					'tipe_kerja' => 'harian',
 					'gambar' => $nm_gambar,
 					'is_posted' => 0,
@@ -221,7 +216,7 @@ class Petani extends CI_Controller{
 	{
 
 		$data['transaksi'] = $this->db->query('SELECT * FROM pekerjaan')->result_array();
-		$data['post'] = $this->db->query('SELECT * FROM pekerjaan INNER JOIN trans_post ON pekerjaan.id_pekerjaan = trans_post.id_pekerjaan')->result_array();
+		//$data['post'] = $this->db->query('SELECT * FROM pekerjaan INNER JOIN trans_post ON pekerjaan.id_pekerjaan = trans_post.id_pekerjaan')->result_array();
 		$data['judul_table'] = 'Daftar Pekerjaan';
 
 		$this->load->view('users/petani/transaksi',$data);

@@ -28,6 +28,15 @@
 
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">mail</i>
+                                    </span>
+                                    <input id="alamat" type="text" class="form-control" value="<?= $val['alamat']; ?>" name="alamat">
+                                </div>
+                            </div>
+
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
                                 	<span class="input-group-addon">
                             			<i class="material-icons">email</i>
                         			</span>
@@ -41,6 +50,15 @@
                             			<i class="material-icons">perm_contact_calendar</i>
                         			</span>
                                     <input type="number" value="<?= $val['nohp']; ?>" class="form-control" name="nohp">
+                                </div>
+                            </div>
+
+                            <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">book</i>
+                                    </span>
+                                    <input type="number" value="<?= $val['rekening']; ?>" class="form-control" name="rekening">
                                 </div>
                             </div>
                         </div>
