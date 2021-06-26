@@ -46,7 +46,7 @@
                       <?=
                       $role = $this->session->role_id == 1 ? '<th class="text-center"><b>Bukti</th>' : '<th class="text-center"><b>Status Postingan</th>';
                       ?>
-                      <th class="text-center"><b>Action</th>
+                      <th colspan="3" class="text-center"><b>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -93,17 +93,17 @@
                               <i class="material-icons">person</i>
                             </a>
 
-                            <a href="<?= base_url('admin/acc/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" <?= $t['is_posted'] == 1 ? 'class="btn btn-success disabled"' : 'class="btn btn-success" title="Acc"'?>>
+                            <a href="<?= base_url('admin/acc/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" <?= $t['is_posted'] >= 1 ? 'class="btn btn-success disabled"' : 'class="btn btn-success" title="Acc"'?>>
                                 <i class="material-icons">check_circle</i>
                             </a>
 
                           <?php }else{ ?>
                             
-                            <a href="<?= base_url('petani/edit_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" class="btn btn-primary" title="Edit">
-                              <i class="material-icons">edit</i>
+                            <a href="<?= base_url('petani/detail_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" class="btn btn-primary" title="Edit">
+                              <i class="material-icons">assignment</i>
                             </a>
 
-                            <a href="<?= base_url("petani/detail_pekerjaan/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" class="btn btn-success" title="Edit">
+                            <a href="<?= base_url("petani/pay_post/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" class="btn btn-success <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'disabled';} else{}}?>" title="Edit">
                               <i class="material-icons">upload</i>
                             </a>
                   

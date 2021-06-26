@@ -43,40 +43,26 @@
               foreach ($posting as $post) {
               $date = new Datetime($post['batas_waktu']);
                 
-                if($post['is_posted'] == 1){
-
-                  ?>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                      <div class="card text-center">
-                          <img class="card-img-top img-fluid" src="<?= base_url('assets/img/images/'. $post['gambar']); ?>">
-                          <div class="card-body">
-                            <h4 class="card-title"><?= $post['nama']; ?></h4>  
-                            <ul class="text-left list-group">
-                              <li>tipe kerja : <?= $post['tipe_kerja']; ?></li>
-                              <li>Upah : <?= $post['upah']; ?></li>
-                              <li>Batas waktu kerja : <?= $date->format('d/m/Y'); ?></li>
-                              
-                              <li>lokasi : <?= substr($post['lokasi'], 0,17); ?>...  <a href="https://www.google.com/maps/search/?api=1&query=<?= $post['lokasi']; ?>" class="btn-fab btn-fab-mini btn-round" data-toggle="tooltip" data-placement="top" title="Lihat di Gmaps"><i class="material-icons">pageview</i></a></li>
-                              
-                            </ul>
-                            <a class="btn btn-primary" href="<?= base_url('get/work/'). $post['id_pekerjaan']; ?>">ambil</a>
-                          </div>
-                          <div class="card-footer text-muted">posted at <?php $det = new Datetime($post['created_at']);echo $det->format('h:i:s d/m/Y'); ?></div>
-                      </div>
-                    </div>
-                  <?php 
-
-                } else {
-                  ?>
-                    <div class="col-xl-12">
-                      <div class="card text-center">
+                ?>
+                  <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card text-center">
+                        <img class="card-img-top img-fluid" src="<?= base_url('assets/img/images/'. $post['gambar']); ?>">
                         <div class="card-body">
-                          <b>Saat ini tidak ada pekerjaan</b>
+                          <h4 class="card-title"><?= $post['nama']; ?></h4>  
+                          <ul class="text-left list-group">
+                            <li>tipe kerja : <?= $post['tipe_kerja']; ?></li>
+                            <li>Upah : <?= $post['upah']; ?></li>
+                            <li>Batas waktu kerja : <?= $date->format('d/m/Y'); ?></li>
+                            
+                            <li>lokasi : <?= substr($post['lokasi'], 0,17); ?>...  <a href="https://www.google.com/maps/search/?api=1&query=<?= $post['lokasi']; ?>" class="btn-fab btn-fab-mini btn-round" data-toggle="tooltip" data-placement="top" title="Lihat di Gmaps"><i class="material-icons">pageview</i></a></li>
+                            
+                          </ul>
+                          <a class="btn btn-primary" href="<?= base_url('get/work/'.$post['id_pekerjaan']); ?>">ambil</a>
                         </div>
-                      </div>
+                        <div class="card-footer text-muted">posted at <?php $det = new Datetime($post['created_at']);echo $det->format('h:i:s d/m/Y'); ?></div>
                     </div>
-                  <?php
-                }
+                  </div>
+                <?php
               } 
               ?>
 

@@ -44,7 +44,7 @@ class Get extends CI_Controller{
 
 			}elseif(!$cek && $cekWork){
 				
-				$update = $this->db->query('UPDATE pekerjaan SET is_posted = 2 WHERE id_pekerjaan',$id);
+				$update = $this->db->query("UPDATE pekerjaan SET is_posted = 2 WHERE id_pekerjaan = '$id'");
 
 				$this->Work->save('trans_getwork',$data);
 				$this->session->set_flashdata('info','<div class="alert alert-success alert-message">

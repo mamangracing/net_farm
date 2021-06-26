@@ -18,7 +18,7 @@ class Work extends CI_Model
 
 	public function getWork()
 	{
-		return $this->db->get_where('pekerjaan');
+		return $this->db->get_where('pekerjaan',array('is_posted'=>1));
 	}
 
 	public function show_Job($data = null)
@@ -28,8 +28,7 @@ class Work extends CI_Model
 
 	public function save($table = null,$data = null)
 	{
-		 $this->db->insert($table,$data);
-		 return $this->db->insert_id();
+		return $this->db->insert($table,$data);
 	}
 
 	public function saveTrans($data = null)
@@ -74,7 +73,7 @@ class Work extends CI_Model
 		$this->db->order_by('T.id DESC');
 
 		if($this->session->role_id == 1){
-			$this->db->where('T.work_status', 1);
+			$this->db->where('T.work_status', 2);
 		}
 
 		$query = $this->db->get();

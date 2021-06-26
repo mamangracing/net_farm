@@ -160,12 +160,12 @@ class Petani extends CI_Controller{
 					'is_posted' => 0,
 					'created_at' => $format_date
 				];
-				
-				$id_pekerjaan = $this->Work->save('pekerjaan',$data);
+				//var_dump($data['upah']);
+				//$id_pekerjaan = $this->Work->save('pekerjaan',$data);
+				var_dump($data['batas_waktu']);
+				// $this->session->set_flashdata('pesan','<div class="alert alert-message text-center alert-success" role="alert">Silahkan lengkapi pembayaran !!</div>');
 
-				$this->session->set_flashdata('pesan','<div class="alert alert-message text-center alert-success" role="alert">Silahkan lengkapi pembayaran !!</div>');
-
-				redirect('petani/daftar_pekerjaan');
+				// redirect('petani/daftar_pekerjaan');
 			}
 
 		}else{
@@ -180,9 +180,8 @@ class Petani extends CI_Controller{
 
 		if(count($data) == 1){
 
-			$this->db->query('DELETE FROM pekerjaan WHERE id_pekerjaan',$id_pekerjaan);
-			$this->db->query('DELETE FROM trans_getwork WHERE id_pekerjaan',$id_pekerjaan);
-			$this->db->query('DELETE FROM trans_post WHERE id_pekerjaan',$id_pekerjaan);
+			$tes = $this->db->query("
+				DELETE pekerjaan, trans_post FROM pekerjaan JOIN trans_post ON pekerjaan.id_pekerjaan = trans_post.id_pekerjaan WHERE pekerjaan.id_pekerjaan='$id_pekerjaan'");
 
 			$this->session->set_flashdata('pesan','<div class="text-center alert alert-success alert-message" role="alert">Pekerjaan berhasil dihapus !! </div>');
 
@@ -214,15 +213,14 @@ class Petani extends CI_Controller{
 
 	public function daftar_pekerjaan()
 	{
-
-		$data['transaksi'] = $this->db->query('SELECT * FROM pekerjaan')->result_array();
-		//$data['post'] = $this->db->query('SELECT * FROM pekerjaan INNER JOIN trans_post ON pekerjaan.id_pekerjaan = trans_post.id_pekerjaan')->result_array();
 		$data['judul_table'] = 'Daftar Pekerjaan';
-
+		$data['transaksi'] = $this->db->query('SELECT * FROM pekerjaan')->result_array();
+		$data['post'] = $this->db->query('SELECT id_pekerjaan FROM trans_post')->result_array();
+		
 		$this->load->view('users/petani/transaksi',$data);
 	}
 
-	public function detail_pekerjaan($id_pekerjaan)
+	public function pay_post($id_pekerjaan)
 	{
 		if($this->session->role_id == '2'){
 
@@ -234,6 +232,11 @@ class Petani extends CI_Controller{
 		}else{
 			$this->load->view('errors/403');
 		}
+	}
+
+	public function detail_post($id_pekerjaan)
+	{
+
 	}
 
 	public function up_bukti($id_pekerjaan)
