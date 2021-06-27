@@ -1,4 +1,4 @@
-      <?php $this->load->view('users/head'); ?>
+        <?php $this->load->view('users/head'); ?>
         <link rel="stylesheet" type="text/css" href="https://demos.creative-tim.com/material-kit/assets/css/material-kit.min.css?v=2.0.4">
 <body class="">
   <div class="wrapper ">
@@ -34,7 +34,8 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-static">*Batas Waktu Pengerjaan</label>
-                        <input type="text" class="form-control datepicker" name="batas" id="date">
+                        <input type="text" id="datepicker" name="tgl" class="form-control">
+                        <div id="ingfo"></div>
                         <?= form_error('batas','<small class="text-danger pl-3 alert-message">','</small>'); ?>
                       </div>
                     </div>
@@ -108,7 +109,78 @@
   }
 
   //booking tanggal
-  let tanggal = new Datepicker(document.getElementById('date'));
+
+  // $(document).ready(function(){
+  //   $('#datepicker').click(function(){
+  //     $.ajax({
+  //       type: "GET",
+  //       url : "http://localhost/netfarm/petani/ajax",
+  //       dataType: "html",
+  //       success : function(response){
+  //         $('#ingfo').html(response);
+  //       }
+  //     })
+  //   })
+  // })
+  
+  jQuery(document).ready(function(){
+    jQuery('#datepicker').datepicker({
+      minDate : new Date(2021, 1, 1),
+      dateFormat : 'dd-mm-yy',
+      changeMonth : true,
+      changeYear : true,
+      constrainInput : true,
+      beforeShowDay : nationalDays
+    })
+
+    function my_check(in_date){
+      in_date = in_date.getDate() + '-' + (in_date.getMonth()+1) + '-' + in_date.getFullYear();
+      let my_array = new Array('9-6-2021','10-6-2021');
+
+      //tidak bisa melakukan booking pada tanggal yang sudah lampau
+      console.log(in_date);
+
+      //cek apakah sudah ada yang booking jika sudah ada yang booking maka tidak bisa booking di tanggal yang sama
+      if(my_array.indexOf(in_date) >= 0){
+        return [false, "notav", 'Not Available'];
+      } else {
+        return [true, "av", 'Available'];
+      }
+    }
+  })
+  
+
+  let disabled = ["01-01-2021"];
+
+  function nationalDays(date){
+    let m = date.getMonth()
+    let d = date.getDate()
+    let y = date.getFullYear()
+
+    for(i = 0; i < disabled.length; i++){
+      if($.inArray((m+1) + '-' + d + '-' +y,disabled) != -1 || new Date() > date){
+        return [false];
+      }
+    }
+    console.log(new Date());
+    return [true];
+  }
+
+  function noWeekendsOrHolidays(date){
+    let noWeekend = jQuery.datepicker.noWeekends(date);
+    return noWeekend[0 ] ? nationalDays(date) : noWeekend;
+  }
+
+  // jQuery(document).ready(function(){
+  //   jQuery('#date').datepicker({
+  //     minDate : new Date(2021, 0, 1),
+  //     maxDate : new Date(2021, 12, 31),
+  //     dateFormat : 'DD, MM, d, yy',
+  //     constrainInput : true,
+  //     beforeShowDay : noWeekendsOrHolidays
+  //   })
+  // })
+
 
 </script>
 

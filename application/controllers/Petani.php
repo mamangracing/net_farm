@@ -128,7 +128,7 @@ class Petani extends CI_Controller{
 
 				$nm = $this->input->post('nama');
 				$juru = $this->input->post('juru');
-				$tgl = $this->input->post('batas');
+				$tgl = $this->input->post('tgl');
 				$upah = $this->input->post('upah');
 				$type = $this->input->post('tipe');
 
@@ -160,9 +160,9 @@ class Petani extends CI_Controller{
 					'is_posted' => 0,
 					'created_at' => $format_date
 				];
-				//var_dump($data['upah']);
-				//$id_pekerjaan = $this->Work->save('pekerjaan',$data);
-				var_dump($data['batas_waktu']);
+				var_dump($tgl);
+				// $id_pekerjaan = $this->Work->save('pekerjaan',$data);
+				
 				// $this->session->set_flashdata('pesan','<div class="alert alert-message text-center alert-success" role="alert">Silahkan lengkapi pembayaran !!</div>');
 
 				// redirect('petani/daftar_pekerjaan');
@@ -308,4 +308,9 @@ class Petani extends CI_Controller{
 	// 	// die();
 	// 	$this->load->view('users/petani/transaksi',$data);
 	// }
+
+	public function ajax()
+	{
+		$this->db->query("select batas_waktu from pekerjaan")->result_array();
+	}
 }
