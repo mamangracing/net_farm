@@ -113,8 +113,11 @@ class Petani extends CI_Controller{
 				'required' => 'Nama tidak boleh kosong',
 				'min_length' => 'Nama gak boleh kurang dari 9']);
 
-			$this->form_validation->set_rules('batas','batas waktu','required|trim',[
-				'required' => 'batas waktu harus di isi']);
+			$this->form_validation->set_rules('tglAwal','TglAwal','required|trim',[
+				'required' => 'Tanggal harus di isi']);
+
+			$this->form_validation->set_rules('tglAkhir','TglAkhir','required|trim',[
+				'required' => 'Tanggal harus di isi']);
 
 			$this->form_validation->set_rules('juru','Juru','required|trim',[
 				'required' => 'Panjang juru harus diisi']);
@@ -126,11 +129,12 @@ class Petani extends CI_Controller{
 
 			}else{
 
-				$nm = $this->input->post('nama');
-				$juru = $this->input->post('juru');
-				$tgl = $this->input->post('tgl');
-				$upah = $this->input->post('upah');
 				$type = $this->input->post('tipe');
+				$tglAwal = $this->input->post('tglAwal');
+				$tglAkhir = $this->input->post('tglAkhir');
+				$juru = $this->input->post('juru');
+				$nama = $this->input->post('nama');
+				$upah = $this->input->post('upah');
 
 				$up_gambar = $_FILES['image']['name'];
 
@@ -151,21 +155,43 @@ class Petani extends CI_Controller{
 				}
 
 				$data = [
-					'nama' => $nm,
+					'nama' => $nama,
 					'juru' => $juru,
-					'batas_waktu' => $tgl,
+					'tgl_awal' => $tglAwal,
+					'tgl_akhir' => $tglAkhir,
 					'upah' => $upah,
 					'tipe_kerja' => 'harian',
 					'gambar' => $nm_gambar,
 					'is_posted' => 0,
 					'created_at' => $format_date
 				];
-				var_dump($tgl);
-				// $id_pekerjaan = $this->Work->save('pekerjaan',$data);
-				
-				// $this->session->set_flashdata('pesan','<div class="alert alert-message text-center alert-success" role="alert">Silahkan lengkapi pembayaran !!</div>');
 
-				// redirect('petani/daftar_pekerjaan');
+				$check = $this->db->query("SELECT tgl_awal, SUM(juru) AS total FROM pekerjaan WHERE tgl_awal='$tglAwal'")->row();
+
+				if($check){
+
+					$jumlah = $check->total + $juru;
+					if($jumlah > 4){
+
+						$this->session->set_flashdata('pesan','<div class="alert alert-message alert-danger text-center" role="alert">Tanggal yang diminta sudah penuh silahkan input ulang </div>');
+
+						redirect('petani/posting');
+
+					} else {
+
+						$this->Work->save($data);
+				
+						$this->session->set_flashdata('pesan','<div class="alert alert-message text-center alert-success" role="alert">Silahkan lengkapi pembayaran !!</div>');
+
+						redirect('petani/daftar_pekerjaan');
+						//echo "masuk database";
+					}
+				}else{
+					
+					$this->session->set_flashdata('pesan','<div class="alert text-center alert-danger alert-message" role="alert">Tanggal tidak tersedia silahkan input ulang </div>');
+
+					redirect('petani/posting');
+				}
 			}
 
 		}else{
@@ -180,8 +206,11 @@ class Petani extends CI_Controller{
 
 		if(count($data) == 1){
 
-			$tes = $this->db->query("
+			$hapus = $this->db->query("
 				DELETE pekerjaan, trans_post FROM pekerjaan JOIN trans_post ON pekerjaan.id_pekerjaan = trans_post.id_pekerjaan WHERE pekerjaan.id_pekerjaan='$id_pekerjaan'");
+
+			$delete = $this->db->query("
+				DELETE FROM pekerjaan WHERE id_pekerjaan='$id_pekerjaan'");
 
 			$this->session->set_flashdata('pesan','<div class="text-center alert alert-success alert-message" role="alert">Pekerjaan berhasil dihapus !! </div>');
 

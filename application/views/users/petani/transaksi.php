@@ -68,10 +68,10 @@
                             } 
                             ?>
                           <td class="text-center"><?= $t['nama']; ?></td>
-                          <td class="text-center"><?= "Rp " . number_format($t['upah'], 0, ',','.'); ?></td>
+                          <td class="text-center"><?= "Rp ".$t['upah']; var_dump(intval($t['upah'])) ?></td>
                           
                           <?php
-                            $sumUpah = $t['upah'];
+                            $sumUpah = $t['upah'];  
                             $admin = 30/100;
                             $biayaAdmin = $sumUpah * $admin;
                             $total = $sumUpah - $biayaAdmin;
@@ -99,15 +99,15 @@
 
                           <?php }else{ ?>
                             
-                            <a href="<?= base_url('petani/detail_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" class="btn btn-primary" title="Edit">
+                            <a href="<?= base_url('petani/detail_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-placement="top" class="btn btn-primary <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'disabled';} else {}}?>" title="Edit">
                               <i class="material-icons">assignment</i>
                             </a>
 
-                            <a href="<?= base_url("petani/pay_post/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-toggle="tooltip" data-placement="top" class="btn btn-success <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'disabled';} else{}}?>" title="Edit">
+                            <a href="<?= base_url("petani/pay_post/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-placement="top" class="btn btn-success <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'disabled';} else{}}?>" title="Edit">
                               <i class="material-icons">upload</i>
                             </a>
                   
-                            <a href="<?= base_url('petani/delete_job/'.$t['id_pekerjaan']);?>" rel="tooltip" class="btn btn-danger delete_user" data-toggle="tooltip" data-placement="top" title="Hapus Post">
+                            <a href="<?= base_url('petani/delete_job/'.$t['id_pekerjaan']);?>" rel="tooltip" class="btn btn-danger delete_user" data-placement="top" title="Hapus Post">
                               <i class="material-icons">close</i>
                             </a>
                             <?php }?>

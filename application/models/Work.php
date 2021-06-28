@@ -26,7 +26,7 @@ class Work extends CI_Model
 		return $this->db->get_where('pekerjaan',['id_pekerjaan' => $data])->result_array();
 	}
 
-	public function save($table = null,$data = null)
+	public function save($table = null, $data = null)
 	{
 		return $this->db->insert($table,$data);
 	}
@@ -81,7 +81,7 @@ class Work extends CI_Model
 	}
 
 	public function getRiwayat_k($id = null){
-		$this->db->select('P.nama as nama_pekerjaan,P.upah,T.work_status');
+		$this->db->select('P.nama as nama_pekerjaan,P.upah,T.work_status,T.get_status');
 		$this->db->from('pekerjaan P');
 		$this->db->join('trans_getwork T', 'P.id_pekerjaan = T.id_pekerjaan');
 		$this->db->join('users U','T.user_getid = U.id_user');

@@ -16,6 +16,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-10">
+            <div class="col-xl-12"><?= $this->session->flashdata('pesan');?></div>
             <div class="card">
               <div class="card-header card-header-primary">
                 <h4 class="card-title">Posting Pekerjaan</h4>
@@ -31,10 +32,18 @@
                         <?= form_error('nama','<small class="text-danger pl-3 alert-message">','</small>'); ?>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                       <div class="form-group">
-                        <label class="bmd-label-static">*Batas Waktu Pengerjaan</label>
-                        <input type="text" id="datepicker" name="tgl" class="form-control">
+                        <label class="bmd-label-static">*Mulai Pengerjaan</label>
+                        <input type="date" id="date" name="tglAwal" class="form-control" onclick="booking();">
+                        <div id="ingfo"></div>
+                        <?= form_error('batas','<small class="text-danger pl-3 alert-message">','</small>'); ?>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="bmd-label-static">*Selesai Pengerjaan</label>
+                        <input type="date" id="date" name="tglAkhir" class="form-control" onclick="booking();">
                         <div id="ingfo"></div>
                         <?= form_error('batas','<small class="text-danger pl-3 alert-message">','</small>'); ?>
                       </div>
@@ -88,6 +97,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 
 <script>
+  $('.alert-message').alert().delay(40000).slideUp('slow');
   
   function sum(){
     let juru = document.getElementById('juru').value;
@@ -98,6 +108,10 @@
     let rupiah = number.substr(0, sisa);
     let ribuan = number.substr(sisa).match(/\d{3}/g);
 
+    console.log(number);
+    console.log(sisa);
+    console.log(ribuan);
+
     if(ribuan){
       separator = sisa ? '.' : '';
       rupiah += separator + ribuan.join('.');
@@ -105,10 +119,18 @@
 
     if(!isNaN(result)){
       document.getElementById('upah').value = rupiah;
+      
     }
   }
 
   //booking tanggal
+
+  function booking(){
+    let input = document.getElementById('date');
+    let date = new Date();
+
+    input.min = "2021-07-7";   
+  }
 
   // $(document).ready(function(){
   //   $('#datepicker').click(function(){
@@ -122,54 +144,53 @@
   //     })
   //   })
   // })
+ 
+  // jQuery(document).ready(function(){
+  //   jQuery('#datepicker').datepicker({
+  //     minDate : new Date(2021, 1, 1),
+  //     dateFormat : 'dd-mm-yy',
+  //     changeMonth : true,
+  //     changeYear : true,
+  //     constrainInput : true,
+  //     beforeShowDay : nationalDays
+  //   })
+
+  //   function my_check(in_date){
+  //     in_date = in_date.getDate() + '-' + (in_date.getMonth()+1) + '-' + in_date.getFullYear();
+  //     let my_array = new Array('9-6-2021','10-6-2021');
+
+  //     //tidak bisa melakukan booking pada tanggal yang sudah lampau
+  //     console.log(in_date);
+
+  //     //cek apakah sudah ada yang booking jika sudah ada yang booking maka tidak bisa booking di tanggal yang sama
+  //     if(my_array.indexOf(in_date) >= 0){
+  //       return [false, "notav", 'Not Available'];
+  //     } else {
+  //       return [true, "av", 'Available'];
+  //     }
+  //   }
+  // })
   
-  jQuery(document).ready(function(){
-    jQuery('#datepicker').datepicker({
-      minDate : new Date(2021, 1, 1),
-      dateFormat : 'dd-mm-yy',
-      changeMonth : true,
-      changeYear : true,
-      constrainInput : true,
-      beforeShowDay : nationalDays
-    })
+  // let disabled = ["01-01-2021"];
 
-    function my_check(in_date){
-      in_date = in_date.getDate() + '-' + (in_date.getMonth()+1) + '-' + in_date.getFullYear();
-      let my_array = new Array('9-6-2021','10-6-2021');
+  // function nationalDays(date){
+  //   let m = date.getMonth()
+  //   let d = date.getDate()
+  //   let y = date.getFullYear()
 
-      //tidak bisa melakukan booking pada tanggal yang sudah lampau
-      console.log(in_date);
+  //   for(i = 0; i < disabled.length; i++){
+  //     if($.inArray((m+1) + '-' + d + '-' +y,disabled) != -1 || new Date() > date){
+  //       return [false];
+  //     }
+  //   }
+  //   console.log(new Date());
+  //   return [true];
+  // }
 
-      //cek apakah sudah ada yang booking jika sudah ada yang booking maka tidak bisa booking di tanggal yang sama
-      if(my_array.indexOf(in_date) >= 0){
-        return [false, "notav", 'Not Available'];
-      } else {
-        return [true, "av", 'Available'];
-      }
-    }
-  })
-  
-
-  let disabled = ["01-01-2021"];
-
-  function nationalDays(date){
-    let m = date.getMonth()
-    let d = date.getDate()
-    let y = date.getFullYear()
-
-    for(i = 0; i < disabled.length; i++){
-      if($.inArray((m+1) + '-' + d + '-' +y,disabled) != -1 || new Date() > date){
-        return [false];
-      }
-    }
-    console.log(new Date());
-    return [true];
-  }
-
-  function noWeekendsOrHolidays(date){
-    let noWeekend = jQuery.datepicker.noWeekends(date);
-    return noWeekend[0 ] ? nationalDays(date) : noWeekend;
-  }
+  // function noWeekendsOrHolidays(date){
+  //   let noWeekend = jQuery.datepicker.noWeekends(date);
+  //   return noWeekend[0 ] ? nationalDays(date) : noWeekend;
+  // }
 
   // jQuery(document).ready(function(){
   //   jQuery('#date').datepicker({

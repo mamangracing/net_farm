@@ -57,7 +57,7 @@
     //     }, 1000);
     //   }
     // }
-    $('.alert-message').alert().delay(3000).slideUp('slow');
+    //$('.alert-message').alert().delay(3000).slideUp('slow');
   </script>
 </body>
 

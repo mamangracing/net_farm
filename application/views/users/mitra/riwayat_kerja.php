@@ -36,28 +36,30 @@
       							<tr>
       								<th><b>No</th>	
       								<th><b>Nama Pekerjaan</th>
-      								<th><b>Uang makan</th>
       								<th><b>Upah</th>
       								<th><b>Total</th>
                       <th><b>Status</b></th>
-      								<th><b>Rating</th>
+                      <th class="td-action"><b>Action</b></th>
       							</tr>
 			      				</thead>
 			      				<tbody>
                       <?php
                       $i = 1;
                       foreach($data as $d){
-                        $total = $d['uang_makan'] + $d['upah'];
-                        $status = $d['work_status'] == 0 ? "belum di kerjakan" : "selesai di kerjakan";
+                        $total = $d['upah'];
+                        $status = $d['work_status'] == 0 ? "belum di kerjakan" : "sedang di kerjakan";
                       ?>
                       <tr>
                         <td><?= $i++; ?></td>
                         <td><?= $d['nama_pekerjaan']; ?></td>
-                        <td><?= $d['uang_makan']; ?></td>
                         <td><?= $d['upah']; ?></td>
                         <td><?= $total; ?></td>
                         <td><?= $status; ?></td>
-                        <td>Cooming Soon</td>
+                        <td>
+                          <a href="#" rel="tooltip" data-placement="top" class="btn btn-primary" title="Edit">
+                            <i class="material-icons">assignment</i>
+                          </a>
+                        </td>
                       </tr>
                       
                       <?php } ?>

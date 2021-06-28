@@ -20,14 +20,6 @@ class Get extends CI_Controller{
 		
 		if($this->session->role_id == 3){
 
-			$data =[
-				'work_status' => 1,
-				'id_pekerjaan' => $id,
-				'user_getid' => $this->session->id,
-				'created_at' => $format_date,
-				'get_status' => 1
-			];
-
 			$d = [
 				'id_pekerjaan' => $id,
 				'user_getid' => $this->session->id
@@ -45,6 +37,14 @@ class Get extends CI_Controller{
 			}elseif(!$cek && $cekWork){
 				
 				$update = $this->db->query("UPDATE pekerjaan SET is_posted = 2 WHERE id_pekerjaan = '$id'");
+
+				$data =[
+					'work_status' => 0,
+					'id_pekerjaan' => $id,
+					'user_getid' => $this->session->id,
+					'created_at' => $format_date,
+					'get_status' => 0
+				];
 
 				$this->Work->save('trans_getwork',$data);
 				$this->session->set_flashdata('info','<div class="alert alert-success alert-message">
