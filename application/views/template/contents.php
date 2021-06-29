@@ -43,7 +43,7 @@
                 foreach ($posting as $post) {
                 $awal = new Datetime($post['tgl_awal']);
                 $selesai = new Datetime($post['tgl_akhir']);
-                  
+    
                   ?>
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
                       <div class="card text-center">
@@ -53,7 +53,7 @@
                             <ul class="text-left list-group">
                               <li>tipe kerja : <?= $post['tipe_kerja']; ?></li>
                               <li>Luas Ladang : <?= $post['juru']; echo " Juru"; ?></li>
-                              <li>Upah : <?= "Rp ".$post['upah']; ?></li>
+                              <li>Upah : <?= "Rp ".number_format($post['harga'],0,',','.'); ?></li>
                               <li>Mulai Kerja : <?= $awal->format('d-m-Y'); ?></li>    
                               <li>Selesai Kerja : <?= $selesai->format('d-m-Y');?></li>            
                             </ul>

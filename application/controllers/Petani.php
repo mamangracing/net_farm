@@ -159,7 +159,7 @@ class Petani extends CI_Controller{
 					'juru' => $juru,
 					'tgl_awal' => $tglAwal,
 					'tgl_akhir' => $tglAkhir,
-					'upah' => $upah,
+					'harga' => $upah,
 					'tipe_kerja' => 'harian',
 					'gambar' => $nm_gambar,
 					'is_posted' => 0,
@@ -179,7 +179,7 @@ class Petani extends CI_Controller{
 
 					} else {
 
-						$this->Work->save($data);
+						$this->Work->save('pekerjaan',$data);
 				
 						$this->session->set_flashdata('pesan','<div class="alert alert-message text-center alert-success" role="alert">Silahkan lengkapi pembayaran !!</div>');
 
@@ -208,9 +208,6 @@ class Petani extends CI_Controller{
 
 			$hapus = $this->db->query("
 				DELETE pekerjaan, trans_post FROM pekerjaan JOIN trans_post ON pekerjaan.id_pekerjaan = trans_post.id_pekerjaan WHERE pekerjaan.id_pekerjaan='$id_pekerjaan'");
-
-			$delete = $this->db->query("
-				DELETE FROM pekerjaan WHERE id_pekerjaan='$id_pekerjaan'");
 
 			$this->session->set_flashdata('pesan','<div class="text-center alert alert-success alert-message" role="alert">Pekerjaan berhasil dihapus !! </div>');
 
@@ -243,8 +240,9 @@ class Petani extends CI_Controller{
 	public function daftar_pekerjaan()
 	{
 		$data['judul_table'] = 'Daftar Pekerjaan';
-		$data['transaksi'] = $this->db->query('SELECT * FROM pekerjaan')->result_array();
-		$data['post'] = $this->db->query('SELECT id_pekerjaan FROM trans_post')->result_array();
+		$data['transaksi'] = $this->Work->cek('pekerjaan');
+		$data['post'] = $this->Work->cek('trans_post');
+		$data['work'] = $this->Work->cek('trans_getwork');
 		
 		$this->load->view('users/petani/transaksi',$data);
 	}

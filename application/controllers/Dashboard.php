@@ -17,6 +17,6 @@ class Dashboard extends CI_Controller{
 	{
 		$data['data'] = $this->Work->show_saldo($this->session->id);
 		
-		return $this->load->view('users/v_dashboard',$data);
+		$this->load->view('users/v_dashboard',$data);
 	}
 }

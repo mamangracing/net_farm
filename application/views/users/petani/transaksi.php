@@ -40,7 +40,7 @@
                       } 
                       ?>
                       <th class="text-center"><b>Nama Pekerjaan</th>
-                      <th class="text-center"><b>Upah</th>
+                      <th class="text-center"><b>Harga</th>
                       <th class="text-center"><b>Biaya Admin</b></th>
                       <th class="text-center"><b>Total Biaya</th>
                       <?=
@@ -54,7 +54,6 @@
                       <?php
                       $i = 1; 
                       foreach ($transaksi as $t) {
-                      
                       if($this->session->role_id == 1){
                         $bukti = "<a href=" . base_url('assets/img/bukti/' . $t['bukti']) ."><img src=" . base_url('assets/img/bukti/' . $t['bukti']) ." style=width:59px></a>";
                       }
@@ -68,13 +67,13 @@
                             } 
                             ?>
                           <td class="text-center"><?= $t['nama']; ?></td>
-                          <td class="text-center"><?= "Rp ".$t['upah']; var_dump(intval($t['upah'])) ?></td>
+                          <td class="text-center"><?= "Rp ".number_format($t['harga'],0,',','.'); ?></td>
                           
                           <?php
-                            $sumUpah = $t['upah'];  
+                            $sumUpah = $t['harga'];  
                             $admin = 30/100;
-                            $biayaAdmin = $sumUpah * $admin;
-                            $total = $sumUpah - $biayaAdmin;
+                            $biayaAdmin = 285000 * $admin;
+                            $total = $sumUpah + $biayaAdmin;
 
                             echo "<td class='text-center'> 30% = Rp ". number_format($biayaAdmin,0,',','.'). "</td>";
                             echo "<td class='text-center'>Rp ". number_format($total,0,',','.')."</td>";
@@ -97,20 +96,26 @@
                                 <i class="material-icons">check_circle</i>
                             </a>
 
-                          <?php }else{ ?>
+                          <?php }else{ 
+
+                            for($a=0; $a<count($work); $a++){
+                              var_dump($work[$a]['work_status'] == 1);
+                            }
+                            ?>
                             
-                            <a href="<?= base_url('petani/detail_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-placement="top" class="btn btn-primary <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'disabled';} else {}}?>" title="Edit">
+                            <a href="<?= base_url('petani/detail_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-placement="top" class="btn btn-primary" <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'hidden';} else {}}?> title="Edit">
                               <i class="material-icons">assignment</i>
                             </a>
 
-                            <a href="<?= base_url("petani/pay_post/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-placement="top" class="btn btn-success <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'disabled';} else{}}?>" title="Edit">
+                            <a href="<?= base_url("petani/pay_post/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-placement="top" class="btn btn-success" <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'hidden';} else {}}?> title="Edit">
                               <i class="material-icons">upload</i>
                             </a>
                   
                             <a href="<?= base_url('petani/delete_job/'.$t['id_pekerjaan']);?>" rel="tooltip" class="btn btn-danger delete_user" data-placement="top" title="Hapus Post">
                               <i class="material-icons">close</i>
                             </a>
-                            <?php }?>
+                            <?php 
+                          }?>
                           </td>
                         </tr>
                       <?php } ?>

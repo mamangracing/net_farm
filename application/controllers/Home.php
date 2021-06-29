@@ -10,7 +10,7 @@ class Home extends CI_Controller{
 
 	public function index(){
 		$data['title'] = 'Home | Netfarm';
-		$data['posting'] = $this->Work->getWork()->result_array();
+		$data['posting'] = $this->Work->getWork();
 		
 		$this->load->view('template/header',$data);
 		$this->load->view('template/contents',$data);

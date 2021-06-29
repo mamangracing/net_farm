@@ -64,12 +64,12 @@
                           <tr>
                             <td><?= $row->nama; ?></td>
                             <td><?= $row->tipe_kerja; ?></td>
-                            <td><?= "Rp " . number_format($row->upah,0,',','.'); ?></td>
+                            <td><?= "Rp " . number_format($row->harga,0,',','.'); ?></td>
                             <?php 
                             $by_admin = 30/100; //10% dari total uang makan+upah
-                            $sumUpah = $row->upah;
-                            $biaya_admin = $by_admin * $sumUpah;
-                            $total = $sumUpah - $biaya_admin;
+                            $sumUpah = $row->harga;
+                            $biaya_admin = $by_admin * 285000;
+                            $total = $sumUpah + $biaya_admin;
 
                             ?>
                             <td>30% = <?= "Rp " . number_format($biaya_admin,0,',','.'); ?></td>

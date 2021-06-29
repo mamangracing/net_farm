@@ -1,14 +1,14 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-xl-6">
               <div class="card card-stats">
                 <div class="card-header card-header-success card-header-icon">
                   <div class="card-icon">
                     <i class="material-icons">account_balance_wallet</i>
                   </div>
-                  <p class="card-category">Saldo Sa'at ini</p>
-                  <h3 class="card-title"><?php $saldo = $data->upah; echo number_format_short($saldo); ?></h3>
+                  <p class="card-category">Saldo Saat ini</p>
+                  <h3 class="card-title"><?= "Rp ". number_format($data[0]['harga'],0,',','.'); ?></h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -17,14 +17,14 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-xl-6">
               <div class="card card-stats">
                 <div class="card-header card-header-danger card-header-icon">
                   <div class="card-icon">
                     <i class="material-icons">info_outline</i>
                   </div>
-                  <p class="card-category">Fixed Issues</p>
-                  <h3 class="card-title">75</h3>
+                  <p class="card-category">Pekerjaan Selesai</p>
+                  <h3 class="card-title"><?= $data[0]['harga'] != null ? count($data) : 0;?></h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -33,7 +33,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
+            <!-- <div class="col-lg-4 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-info card-header-icon">
                   <div class="card-icon">
@@ -48,9 +48,9 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-4">
               <div class="card card-chart">
                 <div class="card-header card-header-success">
@@ -100,6 +100,6 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>

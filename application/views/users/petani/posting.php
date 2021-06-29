@@ -64,8 +64,9 @@
                     </div>
                     <div class="col-md-5">
                       <div class="form-group">
-                        <label class="bmd-label-static">*Upah</label>
-                        <input type="text" class="form-control" name="upah" id="upah" readonly>
+                        <label class="bmd-label-static">*Harga</label>
+                        <input type="text" class="form-control" id="upah" readonly>
+                        <input type="number" name="upah" id="harga" hidden>
                       </div>
                     </div>
                   </div>
@@ -101,16 +102,15 @@
   
   function sum(){
     let juru = document.getElementById('juru').value;
-    let result = parseInt(juru) * 285000; 
+    let admin = 30/100 * 285000;
+    let harga = 285000 - admin;
+    let result = parseInt(juru) * harga;
+    document.getElementById('harga').value = result;  
 
     let number = result.toString();
     let sisa = number.length % 3;
     let rupiah = number.substr(0, sisa);
     let ribuan = number.substr(sisa).match(/\d{3}/g);
-
-    console.log(number);
-    console.log(sisa);
-    console.log(ribuan);
 
     if(ribuan){
       separator = sisa ? '.' : '';

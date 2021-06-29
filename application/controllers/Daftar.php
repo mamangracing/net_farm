@@ -47,18 +47,18 @@ class Daftar extends CI_Controller{
 			$pilih = $this->input->post('pilih',true);
 			$nohp = $this->input->post('nohp',true);
 
+			$data = [
+				'nama' => htmlspecialchars($nama, ENT_QUOTES),
+				'email' => htmlspecialchars($email,ENT_QUOTES),
+				'nohp' => $nohp,
+				'image' => 'default.jpg',
+				'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+				'role_id' => $pilih,
+				'is_active' => 1
+			];
+
 			//jika yang daftar sebagai petani
 			if($pilih == 2){
-
-				$data = [
-					'nama' => htmlspecialchars($nama, ENT_QUOTES),
-					'email' => htmlspecialchars($email,ENT_QUOTES),
-					'nohp' => $nohp,
-					'image' => 'default.jpg',
-					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-					'role_id' => $pilih,
-					'is_active' => 1
-				];
 
 				$this->Usermodel->save_users($data);
 				
@@ -68,7 +68,11 @@ class Daftar extends CI_Controller{
 			} 
 			else {
 
-				echo "daftar buruh";
+				$this->Usermodel->save_users($data);
+				
+				$this->session->set_flashdata('pesan','<div class="alert alert-success alert-message" role="alert">Selamat akun anda berhasil di buat !!</div>');
+
+				redirect('login');
 			}
 		}
 	}
