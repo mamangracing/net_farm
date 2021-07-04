@@ -19,23 +19,23 @@
             <div class="col-xl-12"><?= $this->session->flashdata('pesan');?></div>
             <div class="card">
               <div class="card-header card-header-primary">
-                <h4 class="card-title">Posting Pekerjaan</h4>
+                <h4 class="card-title">Update Pekerjaan</h4>
                 <p class="card-category">Silahkan Lengkapi Form Tertera</p>
               </div>
               <div class="card-body">
-                <?= form_open_multipart('petani/posting');?>
+                <?= form_open_multipart('petani/detail_post/'.$pekerjaan[0]['id_pekerjaan']);?>
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-static">*Nama Pekerjaan</label>
-                        <input type="text" class="form-control" name="nama" required="">
+                        <input type="text" class="form-control" name="nama" value="<?= $pekerjaan[0]['nama'];?>">
                         <?= form_error('nama','<small class="text-danger pl-3 alert-message">','</small>'); ?>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-static">*Mulai Pengerjaan</label>
-                        <input type="date" id="date" name="tglAwal" class="form-control" onclick="booking();">
+                        <input type="date" id="date" name="tglAwal" value="<?= $pekerjaan[0]['tgl_awal'];?>" class="form-control" onclick="booking();">
                         <div id="ingfo"></div>
                         <?= form_error('batas','<small class="text-danger pl-3 alert-message">','</small>'); ?>
                       </div>
@@ -45,7 +45,7 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-static">*Panjang Ladang</label>
-                        <input name="juru" id="juru" class="form-control" type="number" min="1" max="100" onchange="sum();" placeholder="juru">
+                        <input name="juru" id="juru" class="form-control" value="<?= $pekerjaan[0]['juru'];?>" type="number" min="1" max="100" onchange="sum();" placeholder="juru">
                         <?= form_error('juru','<small class="text-danger pl-3 alert-message">','</small>');?>
                       </div>
                     </div>
@@ -57,7 +57,7 @@
                     <div class="col-md-5">
                       <div class="form-group">
                         <label class="bmd-label-static">*Harga</label>
-                        <input type="text" class="form-control" id="upah" readonly>
+                        <input type="text" class="form-control" id="upah" value="<?= $pekerjaan[0]['harga'];?>" readonly>
                         <input type="number" name="upah" id="harga" hidden>
                       </div>
                     </div>
@@ -67,7 +67,7 @@
                       <div class="fileinput">
                         <label class="bmd-label-floating">*Gambar sawah/ladang</label>
                         <?= form_error('image','<small class="text-danger pl-3 alert-message">','</small>'); ?>                        
-                        <input type="file" class="file-input form-control" name="image" required="">
+                        <input type="file" class="file-input form-control" name="image" value="<?= $pekerjaan[0]['gambar'];?>" required="">
 
                       </div>
                     </div>

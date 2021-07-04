@@ -9,9 +9,9 @@ class Usermodel extends CI_Model{
 		return $json;
 	}
 
-	public function save_users($data = null)
+	public function save_users($table = null, $data = null)
 	{
-		return $this->db->insert('users', $data);
+		return $this->db->insert($table, $data);
 	}
 
 	public function UpdateData($where, $data)

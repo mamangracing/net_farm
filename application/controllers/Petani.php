@@ -16,19 +16,55 @@ class Petani extends CI_Controller{
 		return redirect('dashboard');
 	}
 
+	public function detail_pekerjaan($id_pekerjaan = null)
+	{
+		$data['judul_table'] = 'Detail Pengerjaan';
+		$data['transaksi'] = $this->db->query("
+			SELECT * FROM pekerjaan p JOIN trans_getwork t ON p.id_pekerjaan = t.id_pekerjaan JOIN users u ON t.user_getid = u.id_user WHERE p.id_pekerjaan = '$id_pekerjaan'  
+			")->result_array();
+		$data['post'] = $this->Work->cek('trans_post');
+		$data['work'] = $this->Work->cek('trans_getwork');
+
+		$this->load->view('users/petani/transaksi', $data);
+	}
+
+	public function daftar_pekerjaan()
+	{
+		$user = $this->session->id;
+		$data['judul_table'] = 'Daftar Pekerjaan';
+		$data['transaksi'] = $this->db->query("SELECT * FROM pekerjaan JOIN penjadwalan ON pekerjaan.id_pekerjaan = penjadwalan.id WHERE pekerjaan.id_user = '$user'")->result_array();
+		$data['post'] = $this->Work->cek('trans_post');
+		
+		$this->load->view('users/petani/transaksi',$data);
+	}
+
+	public function pay_post($id_pekerjaan)
+	{
+		if($this->session->role_id == '2'){
+
+		$get_pekerjaan = $this->db->where('id_pekerjaan', $id_pekerjaan)->get('pekerjaan')->row();
+		$detail['row'] = $get_pekerjaan; 
+
+		$this->load->view('users/petani/detail',$detail);
+
+		}else{
+			$this->load->view('errors/403');
+		}
+	}
+
 	public function edit_profile()
 	{
 		if($this->session->role_id == '2'){
 			$user = $this->Usermodel->lookMember(['role_id' => 2, 'id_user' => $this->session->id]);
 			$arr = json_decode($user,true);
 			foreach ($arr as $key) {
-			$data['nama'] = $key['nama'];
-			$data['email'] = $key['email'];
-			$data['nohp'] = $key['nohp'];
-			$data['alamat'] = $key['alamat'];
-			$data['norek'] = $key['rekening'];
-			$data['kategori'] = "Petani";
-			$data['img'] = $key['image'];
+				$data['nama'] = $key['nama'];
+				$data['email'] = $key['email'];
+				$data['nohp'] = $key['nohp'];
+				$data['alamat'] = $key['alamat'];
+				$data['norek'] = $key['rekening'];
+				$data['kategori'] = "Petani";
+				$data['img'] = $key['image'];
 			
 			}
 
@@ -116,9 +152,6 @@ class Petani extends CI_Controller{
 			$this->form_validation->set_rules('tglAwal','TglAwal','required|trim',[
 				'required' => 'Tanggal harus di isi']);
 
-			$this->form_validation->set_rules('tglAkhir','TglAkhir','required|trim',[
-				'required' => 'Tanggal harus di isi']);
-
 			$this->form_validation->set_rules('juru','Juru','required|trim',[
 				'required' => 'Panjang juru harus diisi']);
 
@@ -131,7 +164,6 @@ class Petani extends CI_Controller{
 
 				$type = $this->input->post('tipe');
 				$tglAwal = $this->input->post('tglAwal');
-				$tglAkhir = $this->input->post('tglAkhir');
 				$juru = $this->input->post('juru');
 				$nama = $this->input->post('nama');
 				$upah = $this->input->post('upah');
@@ -157,12 +189,18 @@ class Petani extends CI_Controller{
 				$data = [
 					'nama' => $nama,
 					'juru' => $juru,
+					'id_user' => $this->session->id,
 					'tgl_awal' => $tglAwal,
-					'tgl_akhir' => $tglAkhir,
 					'harga' => $upah,
 					'tipe_kerja' => 'harian',
-					'gambar' => $nm_gambar,
-					'is_posted' => 0,
+					'gambar' => 'DEFAULT.jpg',
+					'is_posted' => 0
+				];
+
+				$jadwal = [
+					'work_status' => 0,
+					'get_work' => 0,
+					'tgl_mulai' => $tglAwal,
 					'created_at' => $format_date
 				];
 
@@ -180,11 +218,12 @@ class Petani extends CI_Controller{
 					} else {
 
 						$this->Work->save('pekerjaan',$data);
+						$this->Work->save('penjadwalan',$jadwal);
 				
 						$this->session->set_flashdata('pesan','<div class="alert alert-message text-center alert-success" role="alert">Silahkan lengkapi pembayaran !!</div>');
 
 						redirect('petani/daftar_pekerjaan');
-						//echo "masuk database";
+					
 					}
 				}else{
 					
@@ -200,9 +239,86 @@ class Petani extends CI_Controller{
 		}
 	}
 
+	public function detail_post($id_pekerjaan)
+	{
+		if($this->session->role_id == '2'){
+
+			$this->form_validation->set_rules('nama','Nama','required|trim|min_length[9]', [
+				'required' => 'Nama tidak boleh kosong',
+				'min_length' => 'Nama gak boleh kurang dari 9']);
+
+			$this->form_validation->set_rules('tglAwal','TglAwal','required|trim',[
+				'required' => 'Tanggal harus di isi']);
+
+			$this->form_validation->set_rules('juru','Juru','required|trim',[
+				'required' => 'Panjang juru harus diisi']);
+
+			if($this->form_validation->run() == false ){
+
+				$data['pekerjaan'] = $this->Work->show_Job('pekerjaan','id_pekerjaan',$id_pekerjaan);
+				
+				$this->load->view('users/petani/update_posting',$data);
+			} else {
+				$this->_update_posting($id_pekerjaan);
+			}
+
+		} else {
+			$this->load->view('errors/403');
+		}
+	}
+
+	private function _update_posting($id_pekerjaan)
+	{
+		$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
+		$format_date = $date->format('Y-m-d h:i:s');
+
+		$type = $this->input->post('tipe');
+		$tglAwal = $this->input->post('tglAwal');
+		$juru = $this->input->post('juru');
+		$nama = $this->input->post('nama');
+		$upah = $this->input->post('upah');
+
+		$up_gambar = $_FILES['image']['name'];
+
+		if($up_gambar){
+			$config['upload_path'] = './assets/img/images';
+			$config['allowed_types'] = 'png|jpg|jpeg';
+			$config['max_size'] = '3000';
+			$config['max_width'] = '4024';
+			$config['max_height'] = '4000';
+			$config['file_name'] = 'img_' . time();
+
+			$this->load->library('upload', $config);
+
+			if($this->upload->do_upload('image')){
+				$nm_gambar = $this->upload->data('file_name');
+				
+			}
+		}
+
+		$data = [
+			'nama' => $nama,
+			'juru' => $juru,
+			'tgl_awal' => $tglAwal,
+			'harga' => $upah,
+			'tipe_kerja' => 'harian',
+			'gambar' => $nm_gambar,
+			'is_posted' => 0,
+			'created_at' => $format_date
+		];
+
+		$where = ['id_pekerjaan' => $id_pekerjaan];
+
+		$this->Work->update('pekerjaan',$where, $data);
+
+		$this->session->set_flashdata('pesan','<div class="alert alert-message alert-success text-center" role="alert">Data berhasil diupdate</div>');
+
+		redirect('petani/daftar_pekerjaan');
+	}
+
 	public function delete_job($id_pekerjaan = null)
 	{
-		$data = $this->Work->show_Job($id_pekerjaan);
+		$data = $this->Work->show_Job('pekerjaan','id_pekerjaan',$id_pekerjaan);
 
 		if(count($data) == 1){
 
@@ -223,7 +339,7 @@ class Petani extends CI_Controller{
 
 	public function edit_post($id_pekerjaan = null)
 	{
-		$data = $this->Work->show_Job($id_pekerjaan);
+		$data = $this->Work->show_Job('pekerjaan','id_pekerjaan',$id_pekerjaan);
 
 		if(count($data) == 1){
 
@@ -235,35 +351,6 @@ class Petani extends CI_Controller{
 
 			redirect('petani/daftar_pekerjaan');
 		}
-	}
-
-	public function daftar_pekerjaan()
-	{
-		$data['judul_table'] = 'Daftar Pekerjaan';
-		$data['transaksi'] = $this->Work->cek('pekerjaan');
-		$data['post'] = $this->Work->cek('trans_post');
-		$data['work'] = $this->Work->cek('trans_getwork');
-		
-		$this->load->view('users/petani/transaksi',$data);
-	}
-
-	public function pay_post($id_pekerjaan)
-	{
-		if($this->session->role_id == '2'){
-
-		$get_pekerjaan = $this->db->where('id_pekerjaan', $id_pekerjaan)->get('pekerjaan')->row();
-		$detail['row'] = $get_pekerjaan; 
-
-		$this->load->view('users/petani/detail',$detail);
-
-		}else{
-			$this->load->view('errors/403');
-		}
-	}
-
-	public function detail_post($id_pekerjaan)
-	{
-
 	}
 
 	public function up_bukti($id_pekerjaan)
@@ -294,7 +381,7 @@ class Petani extends CI_Controller{
 
 			$data = [
 				'id_user' => $this->session->id,
-				'img_bukti' => $nm_gambar,
+				'img_bukti' => 'DEFAULT.jpg',
 				'id_pekerjaan' => $id_pekerjaan,
 				'totalAmount' => $total,
 				'created_at' => $format_date,
@@ -317,6 +404,38 @@ class Petani extends CI_Controller{
 		}
 	}
 
+	public function detail_kerja($id_user)
+	{
+		if($this->session->role_id == '2'){
+
+			$data['judul_table'] = 'Detail Pengerjaan';
+			$arr = $this->Work->detail_get($id_user);
+
+			foreach ($arr as $key) {
+				$data['nama_user'] = $key['nama_user'];
+				$data['nama_pekerjaan'] = $key['nama_pekerjaan'];
+				$data['tgl_awal'] = $key['tgl_awal'];
+				$data['juru'] = $key['juru'];
+				$data['tipe_kerja'] = $key['tipe_kerja'];
+				$data['harga'] = $key['harga'];
+				$data['img'] = $key['gambar'];
+				$data['nohp'] = $key['nohp'];
+				$data['email'] = $key['email'];
+				$data['role'] = $key['role_id'];
+				$data['status'] = $key['work_status'];
+			}
+
+			if($arr[0]['id_user'] == $this->session->id) {
+				$this->load->view('users/petani/detail_pengerjaan', $data);
+			} else {
+				$this->load->view('errors/403');
+			}
+
+		} else {
+			$this->load->view('errors/403');
+		}
+	}
+
 	// public function transaksi(){
 		
 	// 	$get_data = $this->Work->showTrans($this->session->id);
@@ -335,9 +454,4 @@ class Petani extends CI_Controller{
 	// 	// die();
 	// 	$this->load->view('users/petani/transaksi',$data);
 	// }
-
-	public function ajax()
-	{
-		$this->db->query("select batas_waktu from pekerjaan")->result_array();
-	}
 }

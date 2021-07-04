@@ -4,8 +4,8 @@
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="<?= base_url('assets/'); ?>/dash/img/sidebar-1.jpg">
       <div class="logo">
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-          Netfarm
+        <a href="<?= base_url();?>" class="simple-text logo-normal">
+           <?= $this->session->role_id == 1 ? "Admin" : ($this->session->role_id == 2 ? "Petani ".$this->session->nama : "Mitra ".$this->session->nama)?>
         </a>
       </div>
       <div class="sidebar-wrapper">
@@ -40,6 +40,7 @@
                       } 
                       ?>
                       <th class="text-center"><b>Nama Pekerjaan</th>
+                      <th class="text-center"><b>tgl mulai</b></th>
                       <th class="text-center"><b>Harga</th>
                       <th class="text-center"><b>Biaya Admin</b></th>
                       <th class="text-center"><b>Total Biaya</th>
@@ -53,7 +54,9 @@
                       <div id="preview"></div>
                       <?php
                       $i = 1; 
+
                       foreach ($transaksi as $t) {
+
                       if($this->session->role_id == 1){
                         $bukti = "<a href=" . base_url('assets/img/bukti/' . $t['bukti']) ."><img src=" . base_url('assets/img/bukti/' . $t['bukti']) ." style=width:59px></a>";
                       }
@@ -67,22 +70,54 @@
                             } 
                             ?>
                           <td class="text-center"><?= $t['nama']; ?></td>
+                          <td class="text-center"><?= $t['tgl_awal']; ?></td>
                           <td class="text-center"><?= "Rp ".number_format($t['harga'],0,',','.'); ?></td>
                           
                           <?php
                             $sumUpah = $t['harga'];  
                             $admin = 30/100;
-                            $biayaAdmin = 285000 * $admin;
+                            $biayaAdmin = $t['juru'] * 285000 * $admin;
                             $total = $sumUpah + $biayaAdmin;
 
                             echo "<td class='text-center'> 30% = Rp ". number_format($biayaAdmin,0,',','.'). "</td>";
                             echo "<td class='text-center'>Rp ". number_format($total,0,',','.')."</td>";
                           ?>
 
-                          <?=
-                          $role_id = $this->session->role_id == 1 ?
-                            "<td class=text-center>" .$status = $t['bukti'] ? $bukti  : 'Belum ada' . "</td>" :
-                            "<td class=text-center>" . $status = $t['is_posted'] == 0 ? 'pending' : 'post' . "</td>";
+                          <?php
+                            if($this->session->role_id == 1){ 
+
+                              if($t['bukti']){ 
+                                echo "<td class=text-center>".$bukti. "</td>";
+                              } else { 
+                                echo "<td class=text-center>Belum ada</td>"; 
+                              }
+
+                            } else {
+
+                                if($t['is_posted'] == 0){
+                                  echo "<td class=text-center>Pending</td>";
+
+                                } else if($t['is_posted'] == 1){
+                                  echo "<td class=text-center>Post</td>";
+
+                                } else if($t['is_posted'] == 2){
+
+                                  if($t['work_status'] == 0){
+                                    echo "<td class=text-center>Diambil</td>";
+                                  
+                                  } else if($t['work_status'] == 1){
+                                    echo "<td class=text-center>Dikerjakan</td>";
+                                  
+                                  } else {
+                                    echo "<td class=text-center>Selesai Dikerjakan</td>";
+                                  }
+                                } else {
+                                  echo "<td class=text-center>Tidak dikerjakan</td>";
+                                }
+                            }
+                          // $role_id = $this->session->role_id == 1 ?
+                          //   "<td class=text-center>" .$status = $t['bukti'] ? $bukti  : 'Belum ada' . "</td>" :
+                          //   "<td class=text-center>" . $status = $t['is_posted'] == 0 ? 'pending' : ($t['is_posted'] == 1 ? 'post' : ($t['is_posted'] == 2 ? 'diambil' : ($t['is_posted'] == 3 ? 'dikerjakan' : 'selesai dikerjakan'))). "</td>";
                           
                           ?>
                           <td class="td-actions text-center">
@@ -97,23 +132,30 @@
                             </a>
 
                           <?php }else{ 
-
-                            for($a=0; $a<count($work); $a++){
-                              var_dump($work[$a]['work_status'] == 1);
-                            }
+                            $disabled = "disabled";
                             ?>
-                            
-                            <a href="<?= base_url('petani/detail_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-placement="top" class="btn btn-primary" <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'hidden';} else {}}?> title="Edit">
-                              <i class="material-icons">assignment</i>
-                            </a>
+                              <a href="<?= base_url('petani/detail_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-placement="top" class="btn btn-primary <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'disabled';} else {}}?>" title="Edit">
+                                <i class="material-icons">assignment</i>
+                              </a>
 
-                            <a href="<?= base_url("petani/pay_post/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-placement="top" class="btn btn-success" <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'hidden';} else {}}?> title="Edit">
-                              <i class="material-icons">upload</i>
-                            </a>
-                  
-                            <a href="<?= base_url('petani/delete_job/'.$t['id_pekerjaan']);?>" rel="tooltip" class="btn btn-danger delete_user" data-placement="top" title="Hapus Post">
-                              <i class="material-icons">close</i>
-                            </a>
+                              <a href="<?= base_url("petani/pay_post/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-placement="top" class="btn btn-success <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'disabled';} else {}}?>" title="Edit">
+                                <i class="material-icons">upload</i>
+                              </a>
+                              
+                              <a href="<?= base_url("petani/detail_kerja/".$t["user_getid"]); ?>" rel="tooltip" data-placement="top" class="btn btn-primary" title="Edit" <?php 
+                              if( $t['get_work'] == 0){ 
+                                if($t['work_status'] == 2){ 
+                                  echo ''; 
+                                } else { echo 'hidden'; }
+                              } else { 
+                                echo '';
+                              } ?>>
+                                <i class="material-icons">person</i>
+                              </a>
+
+                              <a href="<?= base_url('petani/delete_job/'.$t['id_pekerjaan']);?>" rel="tooltip" class="btn btn-danger <?= $t['work_status'] == 0 ? '' : ($t['work_status'] == 1 ? 'disabled' : '') ?>" data-placement="top" title="Hapus Post">
+                                <i class="material-icons">close</i>
+                              </a>
                             <?php 
                           }?>
                           </td>

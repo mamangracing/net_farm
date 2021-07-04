@@ -113,7 +113,7 @@ canvas {
     <p style="text-shadow: -2px 0 0 rgba(255,0,0,.7),
     3px 0 0 rgba(0,255,255,.7);">You Don't have permission to access this heart :(</p>
     <h2 style="text-shadow: -3px 0 0 rgba(255,0,0,.7),
-    3px 0 0 rgba(0,255,255,.7);">Go <a href="https://codelatte.org" target="_blank">hom<span>e</span></a>&nbsp;kids You're Drunk </h2>
+    3px 0 0 rgba(0,255,255,.7);">Go <a href="<?= base_url();?>" target="_blank">hom<span>e</span></a>&nbsp;kids You're Drunk </h2>
   </div>
 </div>
 <script >

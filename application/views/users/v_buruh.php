@@ -8,7 +8,7 @@
                     <i class="material-icons">account_balance_wallet</i>
                   </div>
                   <p class="card-category">Saldo Saat ini</p>
-                  <h3 class="card-title"><?= "Rp ". number_format($data[0]['harga'],0,',','.'); ?></h3>
+                  <h3 class="card-title"><?= count($data) == 0 ? '0' : "Rp ". number_format($data[0]['harga'],0,',','.'); ?></h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -24,7 +24,7 @@
                     <i class="material-icons">info_outline</i>
                   </div>
                   <p class="card-category">Pekerjaan Selesai</p>
-                  <h3 class="card-title"><?= $data[0]['harga'] != null ? count($data) : 0;?></h3>
+                  <h3 class="card-title"><?= count($selesai);?></h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">

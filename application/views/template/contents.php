@@ -5,8 +5,7 @@
           <div class="brand">
             <h1 class="text-black">Network Farming</h1>
             <h3 style="margin-top: -10px; margin-bottom: 10px; max-width: 600px;">Platform untuk mengintegrasikan para buruh tani dan petani</h3>
-            <a class="btn btn-success btn-round" href="<?= base_url('daftar'); ?>">i want to hire</a>
-            <a class="btn btn-danger btn-round" href="#listwork">i want work</a>
+            <a class="btn btn-success btn-round" href="<?= base_url('daftar'); ?>"><?= $this->session->role_id == 2 ? 'Dashboard' : ($this->session->role_id == 3 ? 'Dashboard' : 'Daftar User' )?></a>
           </div>
         </div>
       </div>
@@ -40,29 +39,32 @@
             <div class="row" id="listwork">
               <!-- bagian card -->
               <?php
-                foreach ($posting as $post) {
-                $awal = new Datetime($post['tgl_awal']);
-                $selesai = new Datetime($post['tgl_akhir']);
-    
-                  ?>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                      <div class="card text-center">
-                          <img class="card-img-top img-fluid" src="<?= base_url('assets/img/images/'. $post['gambar']); ?>">
-                          <div class="card-body">
-                            <h4 class="card-title"><?= $post['nama']; ?></h4>  
-                            <ul class="text-left list-group">
-                              <li>tipe kerja : <?= $post['tipe_kerja']; ?></li>
-                              <li>Luas Ladang : <?= $post['juru']; echo " Juru"; ?></li>
-                              <li>Upah : <?= "Rp ".number_format($post['harga'],0,',','.'); ?></li>
-                              <li>Mulai Kerja : <?= $awal->format('d-m-Y'); ?></li>    
-                              <li>Selesai Kerja : <?= $selesai->format('d-m-Y');?></li>            
-                            </ul>
-                            <a class="btn btn-primary" href="<?= base_url('get/work/'.$post['id_pekerjaan']); ?>">ambil</a>
-                          </div>
-                          <div class="card-footer text-muted">posted at <?php $det = new Datetime($post['created_at']);echo $det->format('h:i:s d/m/Y'); ?></div>
+
+                if($this->session->role_id == 3){
+                  foreach ($posting as $post) {
+                  $awal = new Datetime($post['tgl_awal']);
+      
+                    ?>
+                      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                        <div class="card text-center">
+                            <img class="card-img-top img-fluid" src="<?= base_url('assets/img/images/'. $post['gambar']); ?>">
+                            <div class="card-body">
+                              <h4 class="card-title"><?= $post['nama']; ?></h4>  
+                              <ul class="text-left list-group">
+                                <li>tipe kerja : <?= $post['tipe_kerja']; ?></li>
+                                <li>Luas Ladang : <?= $post['juru']; echo " Juru"; ?></li>
+                                <li>Upah : <?= "Rp ".number_format($post['harga'],0,',','.'); ?></li>
+                                <li>Mulai Kerja : <?= $awal->format('d-m-Y'); ?></li>            
+                              </ul>
+                              <a class="btn btn-primary" href="<?= base_url('get/work/'.$post['id_pekerjaan']); ?>">ambil</a>
+                            </div>
+                            <div class="card-footer text-muted">posted at <?php $det = new Datetime($post['created_at']);echo $det->format('h:i:s d/m/Y'); ?></div>
+                        </div>
                       </div>
-                    </div>
-                  <?php
+                    <?php
+                  }
+                } else {
+
                 } 
               ?>
 

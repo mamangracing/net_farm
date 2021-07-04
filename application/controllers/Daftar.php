@@ -57,10 +57,23 @@ class Daftar extends CI_Controller{
 				'is_active' => 1
 			];
 
+			if($pilih == 2){
+				$status = "Petani";
+			} else {
+				$status = "Buruh";
+			}
+
+			$user_group = [
+				'role_id' => $pilih,
+				'status' => $status
+			];
+
+			$this->Usermodel->save_users('users_group',$user_group);
+
 			//jika yang daftar sebagai petani
 			if($pilih == 2){
 
-				$this->Usermodel->save_users($data);
+				$this->Usermodel->save_users('users',$data);
 				
 				$this->session->set_flashdata('pesan','<div class="alert alert-success alert-message" role="alert">Selamat akun anda berhasil di buat !!</div>');
 
@@ -68,7 +81,7 @@ class Daftar extends CI_Controller{
 			} 
 			else {
 
-				$this->Usermodel->save_users($data);
+				$this->Usermodel->save_users('users',$data);
 				
 				$this->session->set_flashdata('pesan','<div class="alert alert-success alert-message" role="alert">Selamat akun anda berhasil di buat !!</div>');
 

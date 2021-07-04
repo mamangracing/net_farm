@@ -1,0 +1,4 @@
+note
+
+done
+jika ladang petani sedang di kerjakan oleh buruh maka yang dapat melihat detail pengerjaan hanya petani dan buruh yang bersangkutan 

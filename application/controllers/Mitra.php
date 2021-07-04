@@ -18,22 +18,84 @@ class Mitra extends CI_Controller{
 	public function riwayat()
 	{
 		$cek['data'] = $this->Work->getRiwayat_k($this->session->id);
+		$cek['search'] = $this->Work->show_job('penjadwalan','work_status',1);
+		
 		$this->load->view('users/mitra/riwayat_kerja',$cek);
 	}
 
 	public function start_work($id_pekerjaan = null)
 	{
-		$this->db->query("UPDATE trans_getwork SET work_status = 1 WHERE id_pekerjaan='$id_pekerjaan'");		
-		$this->session->set_flashdata('pesan','<div class="alert alert-success alert-message text-center" role="alert">Mulai Kerja !!</div>');
+		$user = $this->session->id;
 
-		redirect('mitra/riwayat');
+		$cek = $this->Work->cek_booking('penjadwalan','work_status','1','user_getid',$user);
+
+		if($cek){
+
+			$this->session->set_flashdata('pesan','<div class="alert alert-danger alert-message text-center" role="alert">Uppss masih ada pekerjaan yang belum selesai nih!!</div> ');
+
+			redirect('mitra/riwayat');
+
+		} else {
+			$this->db->query("UPDATE penjadwalan SET work_status = 1 WHERE id='$id_pekerjaan'");
+
+			$this->session->set_flashdata('pesan','<div class="alert alert-success alert-message text-center" role="alert">Mulai Kerja !!</div>');
+
+			redirect('mitra/riwayat');
+		}
 	}
 
 	public function finish_work($id_pekerjaan = null)
 	{
-		$this->db->query("UPDATE trans_getwork SET work_status = 2 WHERE id_pekerjaan='$id_pekerjaan'");		
-		$this->session->set_flashdata('pesan','<div class="alert alert-success alert-message text-center" role="alert">Pekerjaan selesai !!</div>');
+		$this->form_validation->set_rules('image','File','trim|xss_clean');
 
-		redirect('mitra/riwayat');
+		if($this->form_validation->run() == false ){
+
+			$data['id_pekerjaan'] = $id_pekerjaan;
+			$this->load->view('users/mitra/upload_bukti',$data);
+		
+		} else {
+
+			$upload_image = $_FILES['image']['name'];
+			
+			$upload_image = $_FILES['image']['name'];
+			
+			if($upload_image){
+
+				$config['upload_path'] = './assets/img/bukti';
+				$config['allowed_types'] = 'gif|png|jpg|jpeg';
+				$config['max_size'] = '3000';
+				$config['max_width'] = '1024';
+				$config['max_height'] = '1000';
+				$config['file_name'] = 'bukti' . time();
+
+				$this->load->library('upload', $config);
+
+				if($this->upload->do_upload('userfile')){
+					$nm_gambar = $this->upload->data('file_name');
+				}
+			}
+
+			$where = [
+				'id' => $id_pekerjaan,
+				'user_getid' => $this->session->id
+			];
+
+			$data = [
+				'work_status' => 2,
+				'get_work' => 0,
+				'bukti_upload' => 'default.jpg'
+			];
+			
+			$this->Work->update('penjadwalan',$where, $data);
+
+			$this->session->set_flashdata('pesan','<div class="alert alert-success alert-message text-center" role="alert">Pekerjaan selesai !!</div>');
+
+			redirect('mitra/riwayat');
+		}
+	}
+
+	public function report()
+	{
+		echo "report";
 	}
 }

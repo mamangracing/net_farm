@@ -20,33 +20,28 @@ class Get extends CI_Controller{
 		
 		if($this->session->role_id == 3){
 
+			$user = $this->session->id;
+
 			$d = [
 				'id_pekerjaan' => $id,
 				'user_getid' => $this->session->id
 			];
 
-			$cek = $this->Work->cek('trans_getwork',$d);
+			$cek = $this->Work->cek_booking('penjadwalan','user_getid',$user,'get_work',1);
 			$cekWork = $this->Work->cek('pekerjaan',['id_pekerjaan' => $id]);
 
 			if($cek){
 
 				echo "<script>var base_url = window.location.origin+ '/netfarm';
-				alert('pekerjaan sudah anda ambil');
+				alert('Anda memiliki pekerjaan yang belum selesai');
 				window.location.replace(base_url);	</script>";
 
 			}elseif(!$cek && $cekWork){
 				
-				$update = $this->db->query("UPDATE pekerjaan SET is_posted = 2 WHERE id_pekerjaan = '$id'");
-
-				$data =[
-					'work_status' => 0,
-					'id_pekerjaan' => $id,
-					'user_getid' => $this->session->id,
-					'created_at' => $format_date,
-					'get_status' => 0
-				];
-
-				$this->Work->save('trans_getwork',$data);
+				$user = $this->session->id;
+				$this->db->query("UPDATE pekerjaan SET is_posted = 2 WHERE id_pekerjaan = '$id'");
+				$this->db->query("UPDATE penjadwalan SET get_work = 1, user_getid ='$user' WHERE id = '$id'");
+				
 				$this->session->set_flashdata('info','<div class="alert alert-success alert-message">
 	          <div class="container">
 	            <div class="alert-icon">
@@ -56,7 +51,7 @@ class Get extends CI_Controller{
 	                <i class="material-icons">clear</i>
 	              </span>
 	            </button>
-	            <b>Info alert :</b> Pekerjaan berhasil di ambil, silahkan tunggu persetujuan petani !
+	            <b>Info alert :</b> Pekerjaan berhasil di ambil, silahkan silahkan cek di dashboard !
 	          </div>
 	        </div>');
 

@@ -9,6 +9,7 @@ class Home extends CI_Controller{
 	}
 
 	public function index(){
+		
 		$data['title'] = 'Home | Netfarm';
 		$data['posting'] = $this->Work->getWork();
 		
