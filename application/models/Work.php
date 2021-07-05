@@ -4,15 +4,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Work extends CI_Model
 {
 
-	public function show_saldo($id = null)
+	public function show_saldo($user = null)
 	{
 		$this->db->select_sum('P.harga');
-		$this->db->select('J.work_status, U.nama as nama_user');
 		$this->db->from('pekerjaan P');
-		$this->db->join('penjadwalan J', 'P.id_pekerjaan = J.id');
-		$this->db->join('users U','J.user_getid = U.id_user');
-		$this->db->where('U.id_user', $id);
-		$this->db->where('J.work_status',2);
+		$this->db->join('pembayaran B', 'P.id_pekerjaan = B.id_pekerjaan');
+		$this->db->where('B.status_pembayaran',1);
+		$this->db->where('B.user_get',$user);
 		$query = $this->db->get();
 		return $query->result_array();
 	}
@@ -89,10 +87,11 @@ class Work extends CI_Model
 
 	public function info_getwork()
 	{
-		$this->db->select('P.nama as nama, U.nama as nama_petani, U.nohp, U.rekening, J.created_at');
+		$this->db->select('P.id_pekerjaan, P.nama as nama, U.nama as nama_petani, U.nohp, U.rekening, J.created_at, B.status_pembayaran');
 		$this->db->from('penjadwalan J');
 		$this->db->join('pekerjaan P', 'P.id_pekerjaan = J.id');
 		$this->db->join('users U', 'on U.id_user = J.user_getid');
+		$this->db->join('pembayaran B', 'P.id_pekerjaan = B.id_pekerjaan');
 		$this->db->order_by('J.id DESC');
 
 		if($this->session->role_id == 1){

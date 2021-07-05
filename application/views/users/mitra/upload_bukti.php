@@ -4,7 +4,7 @@
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="<?= base_url('assets/'); ?>/dash/img/sidebar-1.jpg">
       <div class="logo">
         <a href="<?= base_url();?>" class="simple-text logo-normal">
-           <?= $this->session->role_id == 1 ? "Admin" : ($this->session->role_id == 2 ? "Petani ".$this->session->nama : "Mitra ".$this->session->nama)?>
+           <?= $this->session->role_id == 1 ? "Admin" : ($this->session->role_id == 2 ? "Petani ".$this->session->nama : "Buruh ".$this->session->nama)?>
         </a>
       </div>
       <div class="sidebar-wrapper">
@@ -27,7 +27,7 @@
                       <ul class="nav nav-tabs" data-tabs="tabs">
                         <li class="nav-item">
                           <a class="nav-link" href="#settings" data-toggle="tab">
-                            <i class="material-icons">backup</i> Upload Bukti Transfer
+                            <i class="material-icons">backup</i> <?= $judul_table;?>
                             <div class="ripple-container"></div>
                           </a>
                         </li>
@@ -38,7 +38,7 @@
                 <div class="card-body">
                   <div class="tab-content">
                     <div class="tab-pane active" id="profile">
-                      <?= form_open_multipart('mitra/finish_work/'.$id_pekerjaan); ?>
+                      <?=  $this->session->role_id == 1 ? form_open_multipart('admin/up_bukti/'.$id_pekerjaan) : form_open_multipart('mitra/finish_work/'.$id_pekerjaan); ?>
                         <table class="table">
                           <tbody>
                             <tr>

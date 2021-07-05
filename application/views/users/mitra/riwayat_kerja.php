@@ -7,7 +7,7 @@
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="<?= base_url('assets/'); ?>/dash/img/sidebar-1.jpg">
       <div class="logo">
         <a href="<?= base_url();?>" class="simple-text logo-normal">
-           <?= $this->session->role_id == 1 ? "Admin" : ($this->session->role_id == 2 ? "Petani ".$this->session->nama : "Mitra ".$this->session->nama)?>
+           <?= $this->session->role_id == 1 ? "Admin" : ($this->session->role_id == 2 ? "Petani ".$this->session->nama : "Buruh ".$this->session->nama)?>
         </a>
       </div>
       <div class="sidebar-wrapper">
@@ -48,8 +48,11 @@
 			      				<tbody>
                       <?php
                       $i = 1;
+                      $hitung = 0;
+
                       foreach($data as $d){
 
+                        //var_dump($pembayaran[$d]);
                         if($d['tgl_awal'] == date('Y-m-d')){
                           if($d['work_status'] == 0){
                             $status = "Belum Dikerjakan";
@@ -68,9 +71,13 @@
                         } else {
                           if($d['work_status'] == 0){
                             $status = "Tanggal belum tersedia";
+                          
+                          } else if($d['work_status'] == 1){
+                            $status = "Pekerjaan belum diselesaikan";
+                          
                           } else{
-                            $status = "Pekerjaan belum selesai";
-                          }
+                            $status = "pekerjaan selesai";
+                          } 
                         }
                       ?>
                         <tr class="text-center">
@@ -89,7 +96,7 @@
                                   $link = base_url('mitra/start_work/'.$d['id']);
                                   $finish = base_url('mitra/finish_work/'.$d['id']);
                                   ?> 
-                                    <a href="<?php if($d['work_status'] == 1){ echo "#";} else { echo $link;}?>" onclick="alert('<?php if($d['work_status'] == 1){ echo "ups sepertinya ada pekerjaan yang belum selesai nih, silahkan klik tombol report untuk menyelesaikan pekerjaan";} else {}?>')" rel="tooltip" data-placement="top" class="btn btn-danger" <?= $d['work_status'] == 1 ? 'hidden' : ($d['work_status'] == 2 ? 'hidden' : '')?> title="Kerja">
+                                    <a href="<?= $d['work_status'] == 1 ? "#" : $link ?>" onclick="alert('<?= $d['work_status'] == 1 ? "ups sepertinya ada pekerjaan yang belum selesai nih, silahkan klik tombol report untuk menyelesaikan pekerjaan" : '' ?>')" rel="tooltip" data-placement="top" class="btn btn-danger" <?= $d['work_status'] == 1 ? 'hidden' : ($d['work_status'] == 2 ? 'hidden' : '')?> title="Kerja">
                                       <i class="material-icons">work</i>
                                     </a>
                                     <a href="<?= $finish; ?>" rel="tooltip" data-placement="top" class="btn btn-success <?= $d['work_status'] == 1 ? "" : "disabled" ?>" title="Selesai">
@@ -101,7 +108,7 @@
                                   $report = base_url('mitra/report');
                               
                                 ?>
-                                  <a href="<? = $d['work_status'] == 0 ? '#' :($d['work_status'] == 1 ? $report : '#')?>" rel="tooltip" class="btn <?= $d['work_status'] == 0 ? 'btn-warning' : ($d['work_status'] == 1 ? 'btn-danger' : 'btn-success')?>" title="<?= $d['work_status'] == 0 ? 'pending' : ($d['work_status'] == 1 ? 'report' : 'selesai')?>"><i class="material-icons"><?= $d['work_status'] == 0 ? 'pending' : ($d['work_status'] == 1 ? 'report' : 'done') ?></i></a>
+                                  <a href="<?= $d['work_status'] == 0 ? '#' :($d['work_status'] == 1 ? $report : '#')?>" rel="tooltip" class="btn <?= $d['work_status'] == 0 ? 'btn-warning' : ($d['work_status'] == 1 ? 'btn-danger' : 'btn-success disabled')?>" title="<?= $d['work_status'] == 0 ? 'pending' : ($d['work_status'] == 1 ? 'report' : 'selesai')?>"><i class="material-icons"><?= $d['work_status'] == 0 ? 'pending' : ($d['work_status'] == 1 ? 'report' : 'done') ?></i></a>
                                 <?php
                               }
                             ?>

@@ -16,7 +16,8 @@ class Dashboard extends CI_Controller{
 	public function index()
 	{
 		$user = $this->session->id;
-		$data['data'] = $this->Work->show_saldo($this->session->id);
+
+		$data['data'] = $this->Work->show_saldo($user);
 		$data['selesai'] = $this->Work->cek_booking('penjadwalan','work_status',2,'user_getid',$user);
 		
 		$this->load->view('users/v_dashboard',$data);

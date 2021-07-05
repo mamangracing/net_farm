@@ -33,13 +33,15 @@
       					<div class="card-body table-responsive">
       						<table class="table table-hover" id="table-datatable">
       							<thead class="text-success">
-      							<tr>
+      							<tr class="text-center">
       								<th><b>No</th>	
       								<th><b>Nama pekerjaan</th>
-      								<th><b>Pengambil pekerjaan</th>
+      								<th><b>Pekerja</th>
       								<th><b>No hp</th>
       								<th><b>No rekening</th>
       								<th><b>waktu & tgl pengambilan</th>
+                      <th><b>Status</b></th>
+                      <th><b>Action</b></th>
       							</tr>
 			      				</thead>
 			      				<tbody>
@@ -49,13 +51,19 @@
                         $date = new Datetime($d['created_at']);
                         $waktu = $date->format('h:i:s [d/m/Y]');
                       ?>
-                      <tr>
+                      <tr class="text-center">
                         <td><?= $i++ ?></td>
                         <td><?= $d['nama']; ?></td>
                         <td><?= $d['nama_petani']; ?></td>
                         <td><?= $d['nohp']; ?></td>
                         <td><?= $d['rekening']; ?></td>
                         <td><?= $waktu; ?></td>
+                        <td><?= $d['status_pembayaran'] == 0 ? 'Belum dibayar' : 'Sudah dibayar' ?></td>
+                        <td class="td-actions">
+                          <a href="<?= base_url('admin/up_bukti/'.$d['id_pekerjaan']);?>" rel="tooltip" data-placement="top" class="btn btn-success" <?= $d['status_pembayaran'] == 0 ? '' : 'hidden' ?> title="Upload">
+                            <i class="material-icons">upload</i>
+                          </a>  
+                        </td>
                       </tr>
                     
                      <?php } ?>

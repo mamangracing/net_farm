@@ -16,9 +16,11 @@ class Mitra extends CI_Controller{
 	}
 
 	public function riwayat()
-	{
+	{	
+		$user = $this->session->id;
 		$cek['data'] = $this->Work->getRiwayat_k($this->session->id);
 		$cek['search'] = $this->Work->show_job('penjadwalan','work_status',1);
+		$cek['pembayaran'] = $this->Work->show_job('pembayaran','user_get',$user);
 		
 		$this->load->view('users/mitra/riwayat_kerja',$cek);
 	}
@@ -50,12 +52,12 @@ class Mitra extends CI_Controller{
 
 		if($this->form_validation->run() == false ){
 
+			$data['judul_table'] = 'UPLOAD BUKTI PEKERJAAN';
 			$data['id_pekerjaan'] = $id_pekerjaan;
+
 			$this->load->view('users/mitra/upload_bukti',$data);
 		
 		} else {
-
-			$upload_image = $_FILES['image']['name'];
 			
 			$upload_image = $_FILES['image']['name'];
 			
@@ -85,7 +87,14 @@ class Mitra extends CI_Controller{
 				'get_work' => 0,
 				'bukti_upload' => 'default.jpg'
 			];
-			
+
+			$pembayaran = [
+				'id_pekerjaan' => $id_pekerjaan,
+				'status_pembayaran' => 0,
+				'user_get' => $this->session->id 
+			];
+
+			$this->Work->save('pembayaran',$pembayaran);
 			$this->Work->update('penjadwalan',$where, $data);
 
 			$this->session->set_flashdata('pesan','<div class="alert alert-success alert-message text-center" role="alert">Pekerjaan selesai !!</div>');

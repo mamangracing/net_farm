@@ -38,24 +38,40 @@ class Get extends CI_Controller{
 
 			}elseif(!$cek && $cekWork){
 				
-				$user = $this->session->id;
-				$this->db->query("UPDATE pekerjaan SET is_posted = 2 WHERE id_pekerjaan = '$id'");
-				$this->db->query("UPDATE penjadwalan SET get_work = 1, user_getid ='$user' WHERE id = '$id'");
-				
-				$this->session->set_flashdata('info','<div class="alert alert-success alert-message">
-	          <div class="container">
-	            <div class="alert-icon">
-	              <i class="material-icons">info_outline</i>
-	            </div><button type="button" class="close" data-dismiss="alert" aria-label="Close">
-	              <span aria-hidden="true">
-	                <i class="material-icons">clear</i>
-	              </span>
-	            </button>
-	            <b>Info alert :</b> Pekerjaan berhasil di ambil, silahkan silahkan cek di dashboard !
-	          </div>
-	        </div>');
+				$cek = $this->Work->show_job('penjadwalan','id',$id);
 
-				redirect(base_url());
+				if($cek){
+
+					$user = $this->session->id;
+					$this->db->query("UPDATE pekerjaan SET is_posted = 2 WHERE id_pekerjaan = '$id'");
+					$this->db->query("UPDATE penjadwalan SET get_work = 1, user_getid ='$user' WHERE id = '$id'");
+					
+					$this->session->set_flashdata('info','<div class="alert alert-success alert-message text-center" role="alert">Pekerjaan berhasil di ambil, silahkan silahkan cek di dashboard !</div>');
+
+					redirect(base_url());
+					
+				} else {
+					
+					$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
+					$format_date = $date->format('Y-m-d h:i:s');
+
+					$data = $this->Work->show_job('pekerjaan','id_pekerjaan',$id);
+					
+					$save = [
+						'id' => $id,
+						'tgl_mulai' => $data[0]['tgl_awal'],
+						'created_at' => $format_date
+					];
+
+					$user = $this->session->id;
+					$this->Work->save('penjadwalan',$save);
+					$this->db->query("UPDATE pekerjaan SET is_posted = 2 WHERE id_pekerjaan = '$id'");
+					$this->db->query("UPDATE penjadwalan SET get_work = 1, user_getid ='$user' WHERE id = '$id'");
+					
+					$this->session->set_flashdata('info','<div class="alert alert-success alert-message text-center" role="alert">Pekerjaan berhasil di ambil, silahkan silahkan cek di dashboard !</div>');
+
+					redirect(base_url());
+				}
 
 			}else{
 

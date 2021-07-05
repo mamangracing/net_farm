@@ -2,7 +2,8 @@
 
 class Admin extends CI_Controller{
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->model('Usermodel');
 		$this->load->model('Work');
@@ -11,8 +12,16 @@ class Admin extends CI_Controller{
 		} 
 	}
 
-	public function index(){
+	public function index()
+	{
 		redirect('dashboard');
+	}
+
+	public function postingan()
+	{
+		$get['detail'] = $this->Work->info_getwork();
+		
+		$this->load->view('users/admin/d_post',$get);
 	}
 
 	public function prof_petani($id_user = null)
@@ -35,7 +44,8 @@ class Admin extends CI_Controller{
 		}
 	}
 
-	public function d_petani(){
+	public function d_petani()
+	{
 		if($this->session->role_id == '1'){
 			// $cek = $this->Sumber->l_petani();
 			$data['json'] = $this->Usermodel->lookMember(['role_id' => 2]);
@@ -46,7 +56,8 @@ class Admin extends CI_Controller{
 		}
 	}
 
-	public function d_buruh(){
+	public function d_buruh()
+	{
 		if($this->session->role_id == '1'){
 			$data['json'] = $this->Usermodel->lookMember(['role_id' => 3]);
 			return $this->load->view('users/admin/vl_buruh',$data);
@@ -83,7 +94,8 @@ class Admin extends CI_Controller{
 		}
 	}
 
-	public function hapus($id,$role){
+	public function hapus($id,$role)
+	{
 		$where = ['id_user' => $id];
 		$this->Usermodel->hapusData($where);
 		if($role == '2'){
@@ -93,7 +105,8 @@ class Admin extends CI_Controller{
 		}
 	}
 
-	public function transaksi(){
+	public function transaksi()
+	{
 		
 		$get_data = $this->Work->showTrans();
 		$data['transaksi'] = $get_data;
@@ -102,7 +115,8 @@ class Admin extends CI_Controller{
 		$this->load->view('users/petani/transaksi',$data);
 	}
 
-	public function acc($id = null){
+	public function acc($id = null)
+	{
 
 		echo is_null($id) == true ? redirect(base_url()) : "";
 		
@@ -120,9 +134,57 @@ class Admin extends CI_Controller{
 		redirect('admin/transaksi');
 	}
 
-	public function postingan(){
-		$get['detail'] = $this->Work->info_getwork();
-		
-		$this->load->view('users/admin/d_post',$get);
+	public function up_bukti($id_pekerjaan = null)
+	{
+		$this->form_validation->set_rules('image','File','trim|xss_clean');
+
+		if($this->form_validation->run() == false){
+
+			$data['judul_table'] = 'UPLOAD BUKTI TRANSFER';
+			$data['id_pekerjaan'] = $id_pekerjaan;
+
+			$this->load->view('users/mitra/upload_bukti',$data);
+		} else {
+
+			if($this->session->role_id == 1){
+
+				$upload = $_FILE['image']['name'];
+
+				if($upload){
+
+					$config['upload_path'] = './assets/img/bukti';
+					$config['allowed_types'] = 'gif|png|jpg|jpeg';
+					$config['max_size'] = '3000';
+					$config['max_width'] = '1024';
+					$config['max_height'] = '1000';
+					$config['file_name'] = 'bukti' . time();
+
+					$this->load->library('upload', $config);
+
+					if($this->upload->do_upload('userfile')){
+						$nm_gambar = $this->upload->data('file_name');
+					}
+				}
+				$where = [
+					'id_pekerjaan' => $id_pekerjaan
+				];
+
+				$data = [
+					'id_users' => $this->session->id,
+					'status_pembayaran' => 1,
+					'tgl_upload' => date('Y-m-d'),
+					'akses' => 'Admin'
+				];
+
+				$this->Work->update('pembayaran',$where,$data);
+
+				$this->session->set_flashdata('pesan','<div class="alert alert-message alert-success text-center" role="alert">Butki berhasil diupload</div>');
+
+				redirect('admin/postingan');
+
+			} else {
+				$this->load->view('errors/403');
+			}
+		}
 	}
 }
