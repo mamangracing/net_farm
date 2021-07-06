@@ -44,7 +44,7 @@
                             <tr>
                               <td>
                                 <div class="fileinput">
-                                  <label class="bmd-label-floating">Silahkan upload bukti Pekerjaan !! </label>                        
+                                  <label class="bmd-label-floating"><?= $keterangan; ?></label>                        
                                   <input type="file" class="file-input form-control" name="image" required="">
                                 </div>
                                 <button type="submit" class="btn btn-success pull-right">Upload</button>

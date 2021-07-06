@@ -24,7 +24,7 @@ class Admin extends CI_Controller{
 		$this->load->view('users/admin/d_post',$get);
 	}
 
-	public function prof_petani($id_user = null)
+	public function profil($id_user = null)
 	{
 		if($this->session->role_id == '1'){
 			
@@ -141,6 +141,7 @@ class Admin extends CI_Controller{
 		if($this->form_validation->run() == false){
 
 			$data['judul_table'] = 'UPLOAD BUKTI TRANSFER';
+			$data['keterangan'] = 'Silahkan upload bukti Transfer !! ';
 			$data['id_pekerjaan'] = $id_pekerjaan;
 
 			$this->load->view('users/mitra/upload_bukti',$data);

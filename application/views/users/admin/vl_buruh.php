@@ -54,16 +54,16 @@
 			      							<td><?= $value['nohp']; ?></td>
 			      							<td><?= $value['rekening']; ?></td>
 			      							<td class="td-actions">
-			      								<button type="button" rel="tooltip" class="btn btn-info">
-								                    <i class="material-icons">person</i>
-								                </button>
+			      								<a href="<?= base_url('admin/profil/'. $value['id_user']);?>" type="button" rel="tooltip" class="btn btn-info">
+								              <i class="material-icons">person</i>
+								            </a>
                             <?php if($this->session->role_id == '1'){ ?>
-								            <button type="button" rel="tooltip" class="btn btn-success" data-target="#ModalEdit<?= $value['id_user']; ?>" data-toggle="modal">
-								                    <i class="material-icons">edit</i>
-								                </button>
-								            <a href="<?= base_url('admin/hapus/'.$value['id_user']); ?><?php echo '/'.$value['role_id']; ?>" rel="tooltip" class="btn btn-danger delete_user">
-								                    <i class="material-icons">close</i>
-								                </a>
+								              <button type="button" rel="tooltip" class="btn btn-success" data-target="#ModalEdit<?= $value['id_user']; ?>" data-toggle="modal">
+								                <i class="material-icons">edit</i>
+								              </button>
+  								            <a href="<?= base_url('admin/hapus/'.$value['id_user']); ?><?php echo '/'.$value['role_id']; ?>" rel="tooltip" class="btn btn-danger delete_user">
+  								              <i class="material-icons">close</i>
+  								            </a>
                             <?php } ?>
 								          </td>
 			      						</tr>

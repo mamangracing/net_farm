@@ -35,7 +35,7 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-static">*Mulai Pengerjaan</label>
-                        <input type="date" id="date" name="tglAwal" value="<?= $pekerjaan[0]['tgl_awal'];?>" class="form-control" onclick="booking();">
+                        <input type="date" id="date" name="tglAwal" value="<?= $pekerjaan[0]['tgl_awal'];?>" min="<?= $date;?>" class="form-control" onclick="booking();">
                         <div id="ingfo"></div>
                         <?= form_error('batas','<small class="text-danger pl-3 alert-message">','</small>'); ?>
                       </div>
@@ -58,7 +58,7 @@
                       <div class="form-group">
                         <label class="bmd-label-static">*Harga</label>
                         <input type="text" class="form-control" id="upah" value="<?= $pekerjaan[0]['harga'];?>" readonly>
-                        <input type="number" name="upah" id="harga" hidden>
+                        <input type="number" name="upah" id="harga" value="<?= $pekerjaan[0]['harga'];?>" hidden>
                       </div>
                     </div>
                   </div>
@@ -117,12 +117,12 @@
 
   //booking tanggal
 
-  function booking(){
-    let input = document.getElementById('date');
-    let date = new Date();
+  // function booking(){
+  //   let input = document.getElementById('date');
+  //   let date = new Date();
 
-    input.min = "2021-07-7";   
-  }
+  //   input.min = "2021-07-7";   
+  // }
 
   // $(document).ready(function(){
   //   $('#datepicker').click(function(){

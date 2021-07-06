@@ -67,6 +67,15 @@
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text">
+                      <i class="material-icons">alamat</i>
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" name="alamat" placeholder="Alamat">
+                  <?= form_error('alamat','<small class="text-danger pl-3 error-message">','</small>'); ?>
+                </div>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
                       <i class="material-icons">mail</i>
                     </span>
                   </div>

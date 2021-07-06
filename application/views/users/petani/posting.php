@@ -35,7 +35,7 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-static">*Mulai Pengerjaan</label>
-                        <input type="date" id="date" name="tglAwal" class="form-control" onclick="booking();">
+                        <input type="date" id="datepicker" name="tglAwal" class="form-control" min="<?= $date;?>">
                         <div id="ingfo"></div>
                         <?= form_error('batas','<small class="text-danger pl-3 alert-message">','</small>'); ?>
                       </div>
@@ -44,8 +44,8 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label class="bmd-label-static">*Panjang Ladang</label>
-                        <input name="juru" id="juru" class="form-control" type="number" min="1" max="100" onchange="sum();" placeholder="juru">
+                        <label class="bmd-label-static">*Luas Ladang</label>
+                        <input name="juru" id="juru" class="form-control" type="number" min="1" max="4" onchange="sum();" placeholder="juru">
                         <?= form_error('juru','<small class="text-danger pl-3 alert-message">','</small>');?>
                       </div>
                     </div>
@@ -90,12 +90,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 
 <script>
-  $('.alert-message').alert().delay(40000).slideUp('slow');
+  //$('.alert-message').alert().delay(40000).slideUp('slow');
   
   function sum(){
     let juru = document.getElementById('juru').value;
-    let admin = 30/100 * 285000;
-    let harga = 285000 - admin;
+    let admin = 30/100 * 200000;
+    let harga = 200000 - admin;
     let result = parseInt(juru) * harga;
     document.getElementById('harga').value = result;  
 
@@ -117,12 +117,33 @@
 
   //booking tanggal
 
-  function booking(){
-    let input = document.getElementById('date');
-    let date = new Date();
+  // function booking(){
+  //   let input = document.getElementById('datepicker');
+  //   let date = new Date();
 
-    input.min = "2021-07-7";   
-  }
+  //   input.min = "2021-07-07";   
+  // }
+
+  // booking();
+
+  // var bookedDates;
+  // var dateToday = new Date();
+
+  // $.ajax({
+  //   type : "GET",
+  //   url : "/netfarm/petani/bookings",
+  //   success : function(data){
+  //     bookedDates = JSON.stringify(data);
+  //     console.log(bookedDates);
+  //     $('#datepicker').datepicker({
+  //       minDate : dateToday,
+  //       beforeShowDay : function(date){
+  //         var string = jQuery.datepicker.formatDate('yy-mm-dd',date);
+  //         return [bookedDates.indexOf(string) == -1];
+  //       }
+  //     })
+  //   }
+  // })
 
   // $(document).ready(function(){
   //   $('#datepicker').click(function(){

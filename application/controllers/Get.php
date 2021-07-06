@@ -43,6 +43,14 @@ class Get extends CI_Controller{
 				if($cek){
 
 					$user = $this->session->id;
+
+					$pembayaran = [
+						'user_get' => $user,
+						'id_pekerjaan' => $id,
+						'status_pembayaran' => 0
+					];
+
+					$this->Work->save('pembayaran',$pembayaran);
 					$this->db->query("UPDATE pekerjaan SET is_posted = 2 WHERE id_pekerjaan = '$id'");
 					$this->db->query("UPDATE penjadwalan SET get_work = 1, user_getid ='$user' WHERE id = '$id'");
 					
@@ -56,14 +64,21 @@ class Get extends CI_Controller{
 					$format_date = $date->format('Y-m-d h:i:s');
 
 					$data = $this->Work->show_job('pekerjaan','id_pekerjaan',$id);
-					
+					$user = $this->session->id;
+
 					$save = [
 						'id' => $id,
 						'tgl_mulai' => $data[0]['tgl_awal'],
 						'created_at' => $format_date
 					];
 
-					$user = $this->session->id;
+					$pembayaran = [
+						'user_get' => $user,
+						'id_pekerjaan' => $id,
+						'status_pembayaran' => 0
+					];
+
+					$this->Work->save('pembayaran',$pembayaran);
 					$this->Work->save('penjadwalan',$save);
 					$this->db->query("UPDATE pekerjaan SET is_posted = 2 WHERE id_pekerjaan = '$id'");
 					$this->db->query("UPDATE penjadwalan SET get_work = 1, user_getid ='$user' WHERE id = '$id'");

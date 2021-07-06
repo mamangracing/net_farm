@@ -15,14 +15,14 @@
                     <form class="form" method="post" action="<?= base_url('admin/update'); ?>">
                        <!--  <p class="description text-center">Or Be Classical</p> -->
                         <div class="card-body">
-                            <input type="hidden" name="id" value="<?= $val['id_user']; ?>">
+                            <input type="hidden" name="id_user" value="<?= $val['id_user']; ?>">
                             <input type="hidden" name="role" value="<?= $val['role_id']; ?>">
                             <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                 	<span class="input-group-addon">
                             			<i class="material-icons">face</i>
                         			</span>
-                                    <input id="nama" type="text" class="form-control" value="<?= $val['nama']; ?>" name="nama">
+                                    <input id="nama" type="text" class="form-control" value="<?= $val['nama']; ?>" name="nama" placeholder="Nama">
                                 </div>
                             </div>
 
@@ -31,7 +31,7 @@
                                     <span class="input-group-addon">
                                         <i class="material-icons">mail</i>
                                     </span>
-                                    <input id="alamat" type="text" class="form-control" value="<?= $val['alamat']; ?>" name="alamat">
+                                    <input id="alamat" type="text" class="form-control" value="<?= $val['alamat']; ?>" name="alamat" placeholder="Alamat">
                                 </div>
                             </div>
 
@@ -40,7 +40,7 @@
                                 	<span class="input-group-addon">
                             			<i class="material-icons">email</i>
                         			</span>
-                                    <input type="email" name="email" class="form-control" value="<?= $val['email']; ?>">
+                                    <input type="email" name="email" class="form-control" value="<?= $val['email']; ?>" placeholder="Email">
                                 </div>
                             </div>
 
@@ -49,7 +49,7 @@
                                 	<span class="input-group-addon">
                             			<i class="material-icons">perm_contact_calendar</i>
                         			</span>
-                                    <input type="number" value="<?= $val['nohp']; ?>" class="form-control" name="nohp">
+                                    <input type="number" value="<?= $val['nohp']; ?>" class="form-control" name="nohp" placeholder="No hp">
                                 </div>
                             </div>
 
@@ -58,7 +58,7 @@
                                     <span class="input-group-addon">
                                         <i class="material-icons">book</i>
                                     </span>
-                                    <input type="number" value="<?= $val['rekening']; ?>" class="form-control" name="rekening">
+                                    <input type="rekening" value="<?= $val['rekening']; ?>" class="form-control" name="rekening" placeholder="Rekening">
                                 </div>
                             </div>
                         </div>

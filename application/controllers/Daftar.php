@@ -25,7 +25,11 @@ class Daftar extends CI_Controller{
 
 		$this->form_validation->set_rules('password','Password','required|trim|min_length[3]',[
 			'matches' => 'Password Tidak sama !',
-			'min_length' => 'Password Terlalu Pendek !']);
+			'min_length' => 'Password Terlalu Pendek !']); 
+
+		$this->form_validation->set_rules('alamat','Alamat','required|trim|min_length[9]',[
+			'min_length' => 'Min kata 9 karakter',
+			'required' => 'Alamat tidak boleh kosong']);
 
 		$this->form_validation->set_rules('nohp','nomor hp','required|trim|numeric|min_length[11]|max_length[13]',
 			[
@@ -46,6 +50,7 @@ class Daftar extends CI_Controller{
 			$nama = $this->input->post('nama',true);
 			$pilih = $this->input->post('pilih',true);
 			$nohp = $this->input->post('nohp',true);
+			$alamat = $this->input->post('alamat',true);
 
 			$data = [
 				'nama' => htmlspecialchars($nama, ENT_QUOTES),
@@ -54,7 +59,8 @@ class Daftar extends CI_Controller{
 				'image' => 'default.jpg',
 				'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
 				'role_id' => $pilih,
-				'is_active' => 1
+				'is_active' => 1,
+				'alamat' => $alamat
 			];
 
 			if($pilih == 2){

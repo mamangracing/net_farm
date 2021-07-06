@@ -30,7 +30,6 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
                   <label class="dropdown-item"><?php echo $this->session->nama; ?></label>
-                  <a class="dropdown-item" href="<?= base_url('petani/edit_profile');?>">Settings</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="<?= base_url('login/logout'); ?>">Log out</a>
                 </div>

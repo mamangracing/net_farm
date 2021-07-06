@@ -68,7 +68,7 @@
                             <?php 
                             $by_admin = 30/100; //10% dari total uang makan+upah
                             $sumUpah = $row->harga;
-                            $biaya_admin = $by_admin * 285000;
+                            $biaya_admin = $row->juru * 200000 * $by_admin;
                             $total = $sumUpah + $biaya_admin;
 
                             ?>

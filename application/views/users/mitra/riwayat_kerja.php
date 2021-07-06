@@ -50,16 +50,18 @@
                       $i = 1;
                       $hitung = 0;
 
-                      foreach($data as $d){
-
-                        //var_dump($pembayaran[$d]);
-                        if($d['tgl_awal'] == date('Y-m-d')){
-                          if($d['work_status'] == 0){
+                      foreach($data as $d => $key){
+                        
+                        $date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
+                        $format_date = $date->format('Y-m-d');
+                        
+                        if($key['tgl_awal'] == $format_date){
+                          if($key['work_status'] == 0){
                             $status = "Belum Dikerjakan";
 
-                          } else if($d['work_status'] == 1){
+                          } else if($key['work_status'] == 1){
                             
-                            if($d['tgl_awal'] != date('Y-m-d')){
+                            if($key['tgl_awal'] != date('Y-m-d')){
                               $status = "pekerjaan belum di selesaikan";
                             } else {
                               $status = "Sedang Dikerjakan";
@@ -69,46 +71,46 @@
                             $status = "Selesai Dikerjakan";
                           } 
                         } else {
-                          if($d['work_status'] == 0){
+                          if($key['work_status'] == 0){
                             $status = "Tanggal belum tersedia";
-                          
-                          } else if($d['work_status'] == 1){
+
+                          } else if($key['work_status'] == 1){
                             $status = "Pekerjaan belum diselesaikan";
                           
                           } else{
-                            $status = "pekerjaan selesai";
+                            $status = "Selesai Dikerjakan";
                           } 
                         }
                       ?>
                         <tr class="text-center">
                           <td><?= $i++; ?></td>
-                          <td><?= $d['nama_pekerjaan']; ?></td>
-                          <td><?= $d['tgl_awal'];?></td>
-                          <td><?= $d['tipe_kerja'];?></td>
-                          <td><?= $d['juru'];?></td>
-                          <td><?= "Rp ". number_format($d['harga'],0,',','.'); ?></td>
-                          <td><?= $status ?></td>
-                          <td></td>
+                          <td><?= $key['nama_pekerjaan']; ?></td>
+                          <td><?= $key['tgl_awal'];?></td>
+                          <td><?= $key['tipe_kerja'];?></td>
+                          <td><?= $key['juru'];?></td>
+                          <td><?= "Rp ". number_format($key['harga'],0,',','.'); ?></td>
+                          <td><?= $status; ?></td>
+                          <td><?= $pembayaran[$hitung++]['status_pembayaran'] == 0 ? 'Belum dibayar' : 'Sudah dibayar' ?></td>
                           <td class="td-actions">
                             <?php 
-                              if(date('Y-m-d') == $d['tgl_awal']){
+                              if(date('Y-m-d') == $key['tgl_awal']){
 
-                                  $link = base_url('mitra/start_work/'.$d['id']);
-                                  $finish = base_url('mitra/finish_work/'.$d['id']);
+                                  $link = base_url('mitra/start_work/'.$key['id']);
+                                  $finish = base_url('mitra/finish_work/'.$key['id']);
                                   ?> 
-                                    <a href="<?= $d['work_status'] == 1 ? "#" : $link ?>" onclick="alert('<?= $d['work_status'] == 1 ? "ups sepertinya ada pekerjaan yang belum selesai nih, silahkan klik tombol report untuk menyelesaikan pekerjaan" : '' ?>')" rel="tooltip" data-placement="top" class="btn btn-danger" <?= $d['work_status'] == 1 ? 'hidden' : ($d['work_status'] == 2 ? 'hidden' : '')?> title="Kerja">
+                                    <a href="<?= $key['work_status'] == 1 ? "#" : $link ?>" rel="tooltip" data-placement="top" class="btn btn-danger" <?= $key['work_status'] == 1 ? 'hidden' : ($key['work_status'] == 2 ? 'hidden' : '')?> title="Kerja">
                                       <i class="material-icons">work</i>
                                     </a>
-                                    <a href="<?= $finish; ?>" rel="tooltip" data-placement="top" class="btn btn-success <?= $d['work_status'] == 1 ? "" : "disabled" ?>" title="Selesai">
+                                    <a href="<?= $finish; ?>" rel="tooltip" data-placement="top" class="btn btn-success <?= $key['work_status'] == 1 ? "" : "disabled" ?>" title="Selesai">
                                       <i class="material-icons">done</i>
                                     </a>  
                                   <?php
                                 
                               } else {
-                                  $report = base_url('mitra/report');
+                                  $report = base_url('mitra/finish_work/'.$key['id']);
                               
                                 ?>
-                                  <a href="<?= $d['work_status'] == 0 ? '#' :($d['work_status'] == 1 ? $report : '#')?>" rel="tooltip" class="btn <?= $d['work_status'] == 0 ? 'btn-warning' : ($d['work_status'] == 1 ? 'btn-danger' : 'btn-success disabled')?>" title="<?= $d['work_status'] == 0 ? 'pending' : ($d['work_status'] == 1 ? 'report' : 'selesai')?>"><i class="material-icons"><?= $d['work_status'] == 0 ? 'pending' : ($d['work_status'] == 1 ? 'report' : 'done') ?></i></a>
+                                  <a href="<?= $key['work_status'] == 0 ? '#' :($key['work_status'] == 1 ? $report : '#')?>" rel="tooltip" class="btn <?= $key['work_status'] == 0 ? 'btn-warning' : ($key['work_status'] == 1 ? 'btn-danger' : 'btn-success disabled')?>" title="<?= $key['work_status'] == 0 ? 'pending' : ($key['work_status'] == 1 ? 'report' : 'selesai')?>"><i class="material-icons"><?= $key['work_status'] == 0 ? 'pending' : ($key['work_status'] == 1 ? 'report' : 'done') ?></i></a>
                                 <?php
                               }
                             ?>

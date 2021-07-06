@@ -158,7 +158,12 @@ class Petani extends CI_Controller{
 
 			if($this->form_validation->run() == false){
 
-				$this->load->view('users/petani/posting');
+				$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
+				$format_date = $date->format('Y-m-d');
+
+				$data['date'] = $format_date;
+
+				$this->load->view('users/petani/posting',$data);
 
 			}else{
 
@@ -255,6 +260,10 @@ class Petani extends CI_Controller{
 
 			if($this->form_validation->run() == false ){
 
+				$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
+				$format_date = $date->format('Y-m-d');
+
+				$data['date'] = $format_date;
 				$data['pekerjaan'] = $this->Work->show_Job('pekerjaan','id_pekerjaan',$id_pekerjaan);
 				
 				$this->load->view('users/petani/update_posting',$data);
@@ -320,14 +329,28 @@ class Petani extends CI_Controller{
 	{
 		$data = $this->Work->show_Job('pekerjaan','id_pekerjaan',$id_pekerjaan);
 
+		$cek = $this->Work->show_Job('trans_post','id_pekerjaan',$id_pekerjaan);
+
 		if(count($data) == 1){
 
-			$hapus = $this->db->query("
-				DELETE pekerjaan, trans_post FROM pekerjaan JOIN trans_post ON pekerjaan.id_pekerjaan = trans_post.id_pekerjaan WHERE pekerjaan.id_pekerjaan='$id_pekerjaan'");
+			if($cek){
 
-			$this->session->set_flashdata('pesan','<div class="text-center alert alert-success alert-message" role="alert">Pekerjaan berhasil dihapus !! </div>');
+				$hapus = $this->db->query("
+					DELETE pekerjaan, trans_post, penjadwalan FROM pekerjaan JOIN trans_post ON pekerjaan.id_pekerjaan = trans_post.id_pekerjaan JOIN penjadwalan ON pekerjaan.id_pekerjaan = penjadwalan.id WHERE pekerjaan.id_pekerjaan = '$id_pekerjaan'");
 
-			redirect('petani/daftar_pekerjaan');
+				$this->session->set_flashdata('pesan','<div class="text-center alert alert-success alert-message" role="alert">Pekerjaan berhasil dihapus !! </div>');
+
+				redirect('petani/daftar_pekerjaan');
+			
+			} else {
+
+				$hapus = $this->db->query("
+				DELETE pekerjaan, penjadwalan FROM pekerjaan JOIN penjadwalan ON pekerjaan.id_pekerjaan = penjadwalan.id WHERE pekerjaan.id_pekerjaan = '$id_pekerjaan'");
+				
+				$this->session->set_flashdata('pesan','<div class="text-center alert alert-success alert-message" role="alert">Pekerjaan berhasil dihapus !! </div>');
+
+				redirect('petani/daftar_pekerjaan');
+			}
 
 		} else {
 
@@ -360,8 +383,11 @@ class Petani extends CI_Controller{
 		$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
 		$format_date = $date->format('Y-m-d h:i:s');	
 		$get_data = $this->db->get_where('pekerjaan',['id_pekerjaan' => $id_pekerjaan])->row();
-		$by_admin = $get_data->upah * 30/100;
-		$total = $get_data->upah + $by_admin;
+
+		$sumUpah = $get_data->harga;
+		$admin = 30/100;
+		$biayaAdmin = $get_data->juru * 200000 * $admin;
+		$total = $sumUpah + $biayaAdmin;
 
 		$file = $_FILES['image']['name'];
 
@@ -404,12 +430,12 @@ class Petani extends CI_Controller{
 		}
 	}
 
-	public function detail_kerja($id_user)
+	public function detail_kerja($id_user = null, $id_pekerjaan = null)
 	{
 		if($this->session->role_id == '2'){
 
 			$data['judul_table'] = 'Detail Pengerjaan';
-			$arr = $this->Work->detail_get($id_user);
+			$arr = $this->Work->detail_get($id_user, $id_pekerjaan);
 
 			foreach ($arr as $key) {
 				$data['nama_user'] = $key['nama_user'];
@@ -424,8 +450,9 @@ class Petani extends CI_Controller{
 				$data['role'] = $key['role_id'];
 				$data['status'] = $key['work_status'];
 			}
-
+				
 			if($arr[0]['id_user'] == $this->session->id) {
+
 				$this->load->view('users/petani/detail_pengerjaan', $data);
 			} else {
 				$this->load->view('errors/403');
@@ -454,4 +481,9 @@ class Petani extends CI_Controller{
 	// 	// die();
 	// 	$this->load->view('users/petani/transaksi',$data);
 	// }
+
+	public function bookings()
+	{
+		$this->Work->show_Job('pekerjaan','juru',4);
+	}
 }

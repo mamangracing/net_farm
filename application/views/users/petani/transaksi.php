@@ -76,7 +76,7 @@
                           <?php
                             $sumUpah = $t['harga'];  
                             $admin = 30/100;
-                            $biayaAdmin = $t['juru'] * 285000 * $admin;
+                            $biayaAdmin = $t['juru'] * 200000 * $admin;
                             $total = $sumUpah + $biayaAdmin;
 
                             echo "<td class='text-center'> 30% = Rp ". number_format($biayaAdmin,0,',','.'). "</td>";
@@ -142,14 +142,7 @@
                                 <i class="material-icons">upload</i>
                               </a>
                               
-                              <a href="<?= base_url("petani/detail_kerja/".$t["user_getid"]); ?>" rel="tooltip" data-placement="top" class="btn btn-primary" title="Edit" <?php 
-                              if( $t['get_work'] == 0){ 
-                                if($t['work_status'] == 2){ 
-                                  echo ''; 
-                                } else { echo 'hidden'; }
-                              } else { 
-                                echo '';
-                              } ?>>
+                              <a href="<?= base_url("petani/detail_kerja/".$t['user_getid']."/".$t['id_pekerjaan']); ?>" rel="tooltip" data-placement="top" class="btn btn-primary" title="Edit" <?php if( $t['get_work'] == 0){ if($t['work_status'] == 2){ echo ''; } else { echo 'hidden'; }} else { echo '';} ?>>
                                 <i class="material-icons">person</i>
                               </a>
 

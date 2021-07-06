@@ -15,14 +15,14 @@ class Work extends CI_Model
 		return $query->result_array();
 	}
 
-	public function detail_get($user)
+	public function detail_get($user = null, $id_pekerjaan = null)
 	{
-		$this->db->select('P.nama as nama_pekerjaan, P.id_user, P.tgl_awal, P.juru, P.tipe_kerja, P.harga, P.gambar, U.nama as nama_user, U.email, U.nohp, U.role_id, J.work_status');
+		$this->db->select('P.id_pekerjaan, P.nama as nama_pekerjaan, P.id_user, P.tgl_awal, P.juru, P.tipe_kerja, P.harga, P.gambar, U.nama as nama_user, U.email, U.nohp, U.role_id, J.work_status');
 		$this->db->from('penjadwalan J');
 		$this->db->join('users U', 'J.user_getid = U.id_user');
 		$this->db->join('pekerjaan P', 'J.id = P.id_pekerjaan');
 		$this->db->where('U.id_user',$user);
-		$this->db->where('J.get_work',1);
+		$this->db->where('J.id',$id_pekerjaan);
 		$query = $this->db->get();
 		return $query->result_array();
 	}
@@ -60,7 +60,7 @@ class Work extends CI_Model
 
 	public function showTrans($id = null)
 	{
-		$this->db->select('P.id_pekerjaan,U.nama as Pemosting, P.nama, P.juru, P.tgl_awal, P.id_user, P.harga, P.is_posted, T.img_bukti as bukti, T.totalAmount as total, T.created_at');
+		$this->db->select('P.id_pekerjaan,U.nama as Pemosting, P.nama, P.juru, P.tgl_awal, P.id_user, P.harga, P.is_posted, T.img_bukti as bukti, T.created_at');
 		$this->db->from('pekerjaan P');
 		$this->db->join('trans_post T', 'P.id_pekerjaan = T.id_pekerjaan');
 		$this->db->join('users U', 'T.id_user = U.id_user');
