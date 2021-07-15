@@ -67,7 +67,7 @@
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text">
-                      <i class="material-icons">alamat</i>
+                      <i class="material-icons">location_on</i>
                     </span>
                   </div>
                   <input type="text" class="form-control" name="alamat" placeholder="Alamat">
