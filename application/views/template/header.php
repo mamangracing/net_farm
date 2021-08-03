@@ -42,7 +42,7 @@
     <div class="container">
       <div class="navbar-translate">
         <a class="navbar-brand" href="">
-          Netfarm </a>
+          NETFARM </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="sr-only">Toggle navigation</span>
           <span class="navbar-toggler-icon"></span>
@@ -77,6 +77,12 @@
                   <i class="material-icons">assignment_returned</i> Masuk
                 </a>
               </li>
+              <li class="nav-item">
+              <a class="nav-link" href="<?= base_url('daftar'); ?>"><?= $this->session->role_id == 2 ? 'Dashboard' : ($this->session->role_id == 3 ? 'Dashboard' : 'Daftar User' )?>
+              <i class="material-icons">assignment_returned</i> 
+              </a>
+            </li>
+              
               <li class="nav-item">
                 <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://twitter.com/CreativeTim" target="_blank" data-original-title="Follow us on Twitter">
                   <i class="fa fa-twitter"></i>

@@ -40,7 +40,7 @@
 </head>
 <body class="login-page sidebar-collapse">
  <!--  <div id="loading"></div> -->
-   <div class="page-header header-filter" style="background-image: url('<?= base_url('assets/'); ?>img/bg7.jpg'); background-size: cover; background-position: top center;">
+   <div class="page-header header-filter" style="background-image: url('<?= base_url('assets/'); ?>img/bg01.jpg'); background-size: cover; background-position: top center;">
     <div class="container">
       <div class="row">
         <div class="col-md-6 ml-auto mr-auto">

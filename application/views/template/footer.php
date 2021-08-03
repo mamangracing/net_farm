@@ -4,7 +4,7 @@
         <ul>
           <li>
             <a href="https://heartscode.net">
-              Heartscode
+              Helpers
             </a>
           </li>
           <li>
@@ -24,7 +24,7 @@
         <script>
           document.write(new Date().getFullYear())
         </script>, made with <i class="material-icons">favorite</i> by
-        <a href="https://heartscode.net" target="_blank">Heartscode</a>
+        <a href="https://heartscode.net" target="_blank">Helpers</a>
       </div>
     </div>
   </footer>

@@ -198,7 +198,7 @@ class Petani extends CI_Controller{
 					'tgl_awal' => $tglAwal,
 					'harga' => $upah,
 					'tipe_kerja' => 'harian',
-					'gambar' => 'DEFAULT.jpg',
+					'gambar' => $nm_gambar,
 					'is_posted' => 0
 				];
 
@@ -380,34 +380,35 @@ class Petani extends CI_Controller{
 	{
 		if($this->session->role_id == 2){
 
-		$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
-		$format_date = $date->format('Y-m-d h:i:s');	
-		$get_data = $this->db->get_where('pekerjaan',['id_pekerjaan' => $id_pekerjaan])->row();
+			$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
+			$format_date = $date->format('Y-m-d h:i:s');	
+			$get_data = $this->db->get_where('pekerjaan',['id_pekerjaan' => $id_pekerjaan])->row();
 
-		$sumUpah = $get_data->harga;
-		$admin = 30/100;
-		$biayaAdmin = $get_data->juru * 200000 * $admin;
-		$total = $sumUpah + $biayaAdmin;
+			$sumUpah = $get_data->harga;
+			$admin = 30/100;
+			$biayaAdmin = $get_data->juru * 200000 * $admin;
+			$total = $sumUpah + $biayaAdmin;
 
-		$file = $_FILES['image']['name'];
+			$file = $_FILES['image']['name'];
 
-		if($file){
-			$config['upload_path'] = './assets/img/bukti';
-			$config['allowed_types'] = 'png|jpg|jpeg';
-			$config['max_size'] = '3000';
-			$config['max_width'] = '4024';
-			$config['max_height'] = '4000';
-			$config['file_name'] = 'img_' . time();
+			if($file){
+				$config['upload_path'] = './assets/img/bukti';
+				$config['allowed_types'] = 'png|jpg|jpeg';
+				$config['max_size'] = '3000';
+				$config['max_width'] = '4024';
+				$config['max_height'] = '4000';
+				$config['file_name'] = 'img_' . time();
 
-			$this->load->library('upload', $config);
+				$this->load->library('upload', $config);
 
-			if($this->upload->do_upload('image')){
-				$nm_gambar = $this->upload->data('file_name');
+				if($this->upload->do_upload('image')){
+					$nm_gambar = $this->upload->data('file_name');
+				}
 			}
 
 			$data = [
 				'id_user' => $this->session->id,
-				'img_bukti' => 'DEFAULT.jpg',
+				'img_bukti' => $nm_gambar,
 				'id_pekerjaan' => $id_pekerjaan,
 				'totalAmount' => $total,
 				'created_at' => $format_date,
@@ -424,9 +425,6 @@ class Petani extends CI_Controller{
 			          <span data-notify="message">Postingan menunggu persetujuan Admin !</span>
 			        </div>');
 			redirect('dashboard');
-		}
-		}else{
-			$this->load->view('errors/403');
 		}
 	}
 

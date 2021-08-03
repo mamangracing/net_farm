@@ -5,7 +5,7 @@
           <div class="brand">
             <h1 class="text-black">Network Farming</h1>
             <h3 style="margin-top: -10px; margin-bottom: 10px; max-width: 600px;">Platform untuk mengintegrasikan para buruh tani dan petani</h3>
-            <a class="btn btn-success btn-round" href="<?= base_url('daftar'); ?>"><?= $this->session->role_id == 2 ? 'Dashboard' : ($this->session->role_id == 3 ? 'Dashboard' : 'Daftar User' )?></a>
+            <?= $this->session->role_id == 2 ? '<a class="btn btn-success btn-round" href="Dashboard">Dashboard</a>' : ( $this->session->role_id == 3 ? '<a class="btn btn-success btn-round" href="Dashboard">Dashboard</a>' : '') ;?>
           </div>
         </div>
       </div>

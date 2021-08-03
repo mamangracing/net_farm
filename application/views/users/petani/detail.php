@@ -108,7 +108,7 @@
                       </table>
                     </div>
                     <div class="tab-pane" id="settings">
-                      <?= form_open_multipart('petani/up_bukti/'.$row->id_pekerjaan); ?>
+                      <form action="<?= base_url ('petani/up_bukti/'.$row->id_pekerjaan); ?>" method="post" enctype="multipart/form-data">
                         <table class="table">
                           <tbody>
                             <tr>
