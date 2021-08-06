@@ -1,29 +1,10 @@
   <footer class="footer" data-background-color="black">
     <div class="container">
-      <nav class="float-left">
-        <ul>
-          <li>
-            <a href="https://heartscode.net">
-              Helpers
-            </a>
-          </li>
-          <li>
-            <a href="<?= base_url(); ?>about-us">
-              About Us
-            </a>
-          </li>
-          <li>
-            <a href="https://heartscode.net">
-              Blog
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="copyright float-right">
+      <div class="copyright float-right col-xl-11 m-au">
         &copy;
         <script>
           document.write(new Date().getFullYear())
-        </script>, made with <i class="material-icons">favorite</i> by
+        </script> made with <i class="material-icons">favorite</i> by
         <a href="https://heartscode.net" target="_blank">Helpers</a>
       </div>
     </div>

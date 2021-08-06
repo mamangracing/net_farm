@@ -53,7 +53,7 @@
                       ?>
                       <tr class="text-center">
                         <td><?= $i++ ?></td>
-                        <td><?= $d['nama']; ?></td>
+                        <td><?= $d['nama_pekerjaan']; ?></td>
                         <td><?= $d['nama_petani']; ?></td>
                         <td><?= $d['nohp']; ?></td>
                         <td><?= $d['rekening']; ?></td>

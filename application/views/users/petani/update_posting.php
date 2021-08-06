@@ -28,7 +28,7 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-static">*Nama Pekerjaan</label>
-                        <input type="text" class="form-control" name="nama" value="<?= $pekerjaan[0]['nama'];?>">
+                        <input type="text" class="form-control" name="nama" value="<?= $pekerjaan[0]['nama_pekerjaan'];?>">
                         <?= form_error('nama','<small class="text-danger pl-3 alert-message">','</small>'); ?>
                       </div>
                     </div>
@@ -44,8 +44,8 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label class="bmd-label-static">*Panjang Ladang</label>
-                        <input name="juru" id="juru" class="form-control" value="<?= $pekerjaan[0]['juru'];?>" type="number" min="1" max="100" onchange="sum();" placeholder="juru">
+                        <label class="bmd-label-static">*Luas Ladang</label>
+                        <input name="juru" id="juru" class="form-control" value="<?= $pekerjaan[0]['meter'];?>" type="number" min="1" max="100" onchange="sum();" placeholder="juru">
                         <?= form_error('juru','<small class="text-danger pl-3 alert-message">','</small>');?>
                       </div>
                     </div>

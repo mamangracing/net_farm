@@ -59,19 +59,6 @@
         ?>
           <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
-              <li class="dropdown nav-item">
-                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                  <i class="material-icons">notification_important</i>
-                </a>
-                <div class="dropdown-menu dropdown-with-icons">
-                  <a href="<?= base_url('home/Tentang_netfarm');?>" class="dropdown-item">
-                    <i class="material-icons">supervised_user_circle</i> Tentang netfarm
-
-                  <a href="<?= base_url('home/visi');?>" class="dropdown-item">
-                    <i class="material-icons">content_paste</i> Visi-misi
-                  </a>
-                </div>
-              </li>
               <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('login'); ?>" onclick="scrollToDownload()">
                   <i class="material-icons">assignment_returned</i> Masuk
@@ -98,16 +85,6 @@
                   <i class="fa fa-instagram"></i>
                 </a>
               </li>
-              <li>
-              <form class="form-inline ml-auto">
-                <div class="form-group has-black">
-                  <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-white btn-raised btn-fab btn-round">
-                    <i class="material-icons">search</i>
-                </button>
-              </form>
-            </li>
             </ul>
           </div>
         <?php

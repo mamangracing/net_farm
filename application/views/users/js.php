@@ -47,6 +47,7 @@
       md.initFormExtendedDatetimepickers();
       $('#table-datatable').DataTable();
     });
+    
     $('.alert-message').alert().delay(3000).slideUp('slow');
   </script>
 </body>

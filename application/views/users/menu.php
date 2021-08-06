@@ -23,13 +23,13 @@
           <li class="nav-item <?php if($this->uri->segment(2) == 'transaksi'){ echo 'active';} ?>">
             <a class="nav-link" href="<?= base_url('admin/transaksi'); ?>">
               <i class="material-icons">library_books</i>
-              <p>Transaksi</p>
+              <p>Transaksi Petani</p>
             </a>
           </li>
           <li class="nav-item <?php if($this->uri->segment(2) == 'postingan'){ echo 'active';} ?>">
             <a class="nav-link" href="<?= base_url('admin/postingan'); ?>">
               <i class="material-icons">bubble_chart</i>
-              <p>Postingan</p>
+              <p>Pekerjaan buruh tani</p>
             </a>
           </li>
 
@@ -38,7 +38,7 @@
           <li class="nav-item <?php if($this->uri->segment(2) == 'edit_profile'){ echo 'active';} ?>">
             <a class="nav-link" href="<?= base_url('petani/edit_profile'); ?>">
               <i class="material-icons">account_circle</i>
-              <p>Edit Profile</p>
+              <p> Profile</p>
             </a>
           </li>
           <li class="nav-item <?php if($this->uri->segment(2) == 'posting'){ echo 'active';} ?>">

@@ -37,7 +37,7 @@
             <script>
               document.write(new Date().getFullYear())
             </script>, Coded with <i class="material-icons">favorite</i> by
-            <a href="https://heartscode.net" target="_blank">Team Hore</a> 
+            <a href="https://heartscode.net" target="_blank">Team Hore </a> 
           </div>
         </div>
       </footer>

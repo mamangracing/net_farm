@@ -17,7 +17,7 @@ class Work extends CI_Model
 
 	public function detail_get($user = null, $id_pekerjaan = null)
 	{
-		$this->db->select('P.id_pekerjaan, P.nama as nama_pekerjaan, P.id_user, P.tgl_awal, P.juru, P.tipe_kerja, P.harga, P.gambar, U.nama as nama_user, U.email, U.nohp, U.role_id, J.work_status');
+		$this->db->select('P.id_pekerjaan, P.nama_pekerjaan, P.id_user, P.tgl_awal, P.meter, P.tipe_kerja, P.harga, U.nama as nama_user, U.email, U.nohp, U.role_id, J.work_status, J.bukti_upload, J.created_at, U.image as profil');
 		$this->db->from('penjadwalan J');
 		$this->db->join('users U', 'J.user_getid = U.id_user');
 		$this->db->join('pekerjaan P', 'J.id = P.id_pekerjaan');
@@ -27,9 +27,9 @@ class Work extends CI_Model
 		return $query->result_array();
 	}
 
-	public function getWork()
+	public function getWork($table = null, $where = null)
 	{
-		return $this->db->get_where('pekerjaan',array('is_posted'=>1))->result_array();
+		return $this->db->get_where($table, $where)->result_array();
 	}
 
 	public function show_Job($table = null, $where = null, $data = null)
@@ -60,9 +60,10 @@ class Work extends CI_Model
 
 	public function showTrans($id = null)
 	{
-		$this->db->select('P.id_pekerjaan,U.nama as Pemosting, P.nama, P.juru, P.tgl_awal, P.id_user, P.harga, P.is_posted, T.img_bukti as bukti, T.created_at');
+		$this->db->select('P.id_pekerjaan,U.nama as Pemosting, P.nama_pekerjaan, P.meter, P.tgl_awal, P.id_user, P.harga, T.img_bukti as bukti, T.created_at, J.is_posted');
 		$this->db->from('pekerjaan P');
 		$this->db->join('trans_post T', 'P.id_pekerjaan = T.id_pekerjaan');
+		$this->db->join('penjadwalan J', 'P.id_pekerjaan = J.id');
 		$this->db->join('users U', 'T.id_user = U.id_user');
 
 		if($this->session->role_id != 1){
@@ -87,7 +88,7 @@ class Work extends CI_Model
 
 	public function info_getwork()
 	{
-		$this->db->select('P.id_pekerjaan, P.nama as nama, U.nama as nama_petani, U.nohp, U.rekening, J.created_at, B.status_pembayaran');
+		$this->db->select('P.id_pekerjaan, P.nama_pekerjaan, U.nama as nama_petani, U.nohp, U.rekening, J.created_at, B.status_pembayaran');
 		$this->db->from('penjadwalan J');
 		$this->db->join('pekerjaan P', 'P.id_pekerjaan = J.id');
 		$this->db->join('users U', 'on U.id_user = J.user_getid');
@@ -103,7 +104,7 @@ class Work extends CI_Model
 	}
 
 	public function getRiwayat_k($id = null){
-		$this->db->select('P.nama as nama_pekerjaan, P.juru, P.harga, P.tgl_awal, P.tipe_kerja, J.user_getid ,J.work_status, J.id');	
+		$this->db->select('P.nama_pekerjaan, P.meter, P.harga, P.tgl_awal, P.tipe_kerja, J.user_getid ,J.work_status, J.id');	
 		$this->db->from('pekerjaan P');
 		$this->db->join('penjadwalan J', 'P.id_pekerjaan = J.id');
 		$this->db->join('users U','J.user_getid = U.id_user');

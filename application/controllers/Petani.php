@@ -87,7 +87,7 @@ class Petani extends CI_Controller{
 					$config['allowed_types'] = 'gif|png|jpg|jpeg';
 					$config['max_size'] = '3000';
 					$config['max_width'] = '1024';
-					$config['max_height'] = '1000';
+					$config['max_height'] = '2000';
 					$config['file_name'] = 'profile-' . time();
 
 					$this->load->library('upload', $config);
@@ -145,32 +145,29 @@ class Petani extends CI_Controller{
 
 		if($this->session->role_id == '2'){
 
-			$this->form_validation->set_rules('nama','Nama','required|trim|min_length[9]', [
-				'required' => 'Nama tidak boleh kosong',
-				'min_length' => 'Nama gak boleh kurang dari 9']);
-
 			$this->form_validation->set_rules('tglAwal','TglAwal','required|trim',[
 				'required' => 'Tanggal harus di isi']);
 
-			$this->form_validation->set_rules('juru','Juru','required|trim',[
-				'required' => 'Panjang juru harus diisi']);
+			$this->form_validation->set_rules('meter','Meter','required|trim',[
+				'required' => 'Panjang ladang harus diisi']);
 
 
 			if($this->form_validation->run() == false){
-
-				$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
-				$format_date = $date->format('Y-m-d');
 
 				$data['date'] = $format_date;
 
 				$this->load->view('users/petani/posting',$data);
 
-			}else{
+			} else {
+
+
+				$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
+				$format_date = $date->format('Y-m-d H:i:s');
 
 				$type = $this->input->post('tipe');
 				$tglAwal = $this->input->post('tglAwal');
-				$juru = $this->input->post('juru');
-				$nama = $this->input->post('nama');
+				$juru = $this->input->post('meter');
+				$pekerjaan = $this->input->post('work_type');
 				$upah = $this->input->post('upah');
 
 				$up_gambar = $_FILES['image']['name'];
@@ -191,50 +188,49 @@ class Petani extends CI_Controller{
 					}
 				}
 
+				if($pekerjaan == 1){
+
+					$type = "Membajak Sawah";
+				} else {
+					$type = "Mengelola Ladang";
+				}
+
 				$data = [
-					'nama' => $nama,
-					'juru' => $juru,
+					'nama_pekerjaan' => $type,
+					'meter' => $juru,
 					'id_user' => $this->session->id,
 					'tgl_awal' => $tglAwal,
 					'harga' => $upah,
 					'tipe_kerja' => 'harian',
 					'gambar' => $nm_gambar,
-					'is_posted' => 0
 				];
 
 				$jadwal = [
 					'work_status' => 0,
 					'get_work' => 0,
+					'is_posted' => 0,
 					'tgl_mulai' => $tglAwal,
 					'created_at' => $format_date
 				];
 
-				$check = $this->db->query("SELECT tgl_awal, SUM(juru) AS total FROM pekerjaan WHERE tgl_awal='$tglAwal'")->row();
+				$data_pekerjaan = $this->db->query("SELECT * FROM pekerjaan WHERE tgl_awal='$tglAwal'")->result_array();
+				$check = count($data_pekerjaan);
 
-				if($check){
+				if($check >= 4){
 
-					$jumlah = $check->total + $juru;
-					if($jumlah > 4){
-
-						$this->session->set_flashdata('pesan','<div class="alert alert-message alert-danger text-center" role="alert">Tanggal yang diminta sudah penuh silahkan input ulang </div>');
-
-						redirect('petani/posting');
-
-					} else {
-
-						$this->Work->save('pekerjaan',$data);
-						$this->Work->save('penjadwalan',$jadwal);
-				
-						$this->session->set_flashdata('pesan','<div class="alert alert-message text-center alert-success" role="alert">Silahkan lengkapi pembayaran !!</div>');
-
-						redirect('petani/daftar_pekerjaan');
-					
-					}
-				}else{
-					
-					$this->session->set_flashdata('pesan','<div class="alert text-center alert-danger alert-message" role="alert">Tanggal tidak tersedia silahkan input ulang </div>');
+					$this->session->set_flashdata('pesan','<div class="alert alert-message alert-danger text-center" role="alert">Tanggal yang diminta sudah penuh silahkan input ulang </div>');
 
 					redirect('petani/posting');
+
+				} else {
+
+					$this->Work->save('pekerjaan',$data);
+					$this->Work->save('penjadwalan',$jadwal);
+			
+					$this->session->set_flashdata('pesan','<div class="alert alert-message text-center alert-success" role="alert">Silahkan lengkapi pembayaran !!</div>');
+
+					redirect('petani/daftar_pekerjaan');
+				
 				}
 			}
 
@@ -439,10 +435,12 @@ class Petani extends CI_Controller{
 				$data['nama_user'] = $key['nama_user'];
 				$data['nama_pekerjaan'] = $key['nama_pekerjaan'];
 				$data['tgl_awal'] = $key['tgl_awal'];
-				$data['juru'] = $key['juru'];
+				$data['mulai_kerja'] = $key['created_at'];
+				$data['meter'] = $key['meter'];
 				$data['tipe_kerja'] = $key['tipe_kerja'];
 				$data['harga'] = $key['harga'];
-				$data['img'] = $key['gambar'];
+				$data['img'] = $key['bukti_upload'];
+				$data['profil'] = $key['profil'];
 				$data['nohp'] = $key['nohp'];
 				$data['email'] = $key['email'];
 				$data['role'] = $key['role_id'];

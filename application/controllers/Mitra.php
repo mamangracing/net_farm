@@ -48,68 +48,56 @@ class Mitra extends CI_Controller{
 
 	public function finish_work($id_pekerjaan = null)
 	{
-		$this->form_validation->set_rules('image','File','trim|xss_clean');
 
-		if($this->form_validation->run() == false ){
+		$data['judul_table'] = 'UPLOAD BUKTI PEKERJAAN';
+		$data['keterangan'] = 'Silahkan upload bukti Pekerjaan !! ';
+		$data['id_pekerjaan'] = $id_pekerjaan;
 
-			$data['judul_table'] = 'UPLOAD BUKTI PEKERJAAN';
-			$data['keterangan'] = 'Silahkan upload bukti Pekerjaan !! ';
-			$data['id_pekerjaan'] = $id_pekerjaan;
-
-			$this->load->view('users/mitra/upload_bukti',$data);
+		$this->load->view('users/mitra/upload_bukti',$data);
 		
-		} else {
+	}
+
+	public function save_work($id_pekerjaan = null) {
+
+		$date = new Datetime('now', new DateTimeZone('Asia/Jakarta'));
+		$format_date = $date->format('Y-m-d H:i:s');
 			
-			$upload_image = $_FILES['image']['name'];
-			
-			if($upload_image){
+		$upload_image = $_FILES['image']['name'];
 
-				$config['upload_path'] = './assets/img/bukti';
-				$config['allowed_types'] = 'gif|png|jpg|jpeg';
-				$config['max_size'] = '3000';
-				$config['max_width'] = '1024';
-				$config['max_height'] = '1000';
-				$config['file_name'] = 'bukti' . time();
+		if($upload_image){
+			$config['upload_path'] = './assets/img/images';
+			$config['allowed_types'] = 'png|jpg|jpeg';
+			$config['max_size'] = '3000';
+			$config['max_width'] = '4024';
+			$config['max_height'] = '4000';
+			$config['file_name'] = 'img_' . time();
 
-				$this->load->library('upload', $config);
+			$this->load->library('upload', $config);
 
-				if($this->upload->do_upload('userfile')){
-					$nm_gambar = $this->upload->data('file_name');
-				}
+			if($this->upload->do_upload('image')){
+				$nm_gambar = $this->upload->data('file_name');
+				
 			}
-
-			$cek = $this->Work->show_Job('pembayaran','id_pekerjaan',$id_pekerjaan);
-
-			if($cek){
-
-			} else {
-
-				$pembayaran = [
-					'id_pekerjaan' => $id_pekerjaan,
-					'status_pembayaran' => 0,
-					'user_get' => $this->session->id 
-				];
-
-				$this->Work->save('pembayaran',$pembayaran);
-			}
-
-			$where = [
-				'id' => $id_pekerjaan,
-				'user_getid' => $this->session->id
-			];
-
-			$data = [
-				'work_status' => 2,
-				'get_work' => 0,
-				'bukti_upload' => 'default.jpg'
-			];
-
-			
-			$this->Work->update('penjadwalan',$where, $data);
-
-			$this->session->set_flashdata('pesan','<div class="alert alert-success alert-message text-center" role="alert">Pekerjaan selesai !!</div>');
-
-			redirect('mitra/riwayat');
 		}
+
+		$cek = $this->Work->show_Job('pembayaran','id_pekerjaan',$id_pekerjaan);
+
+		$where = [
+			'id' => $id_pekerjaan,
+			'user_getid' => $this->session->id
+		];
+
+		$data = [
+			'work_status' => 2,
+			'get_work' => 0,
+			'bukti_upload' => $nm_gambar,
+			'created_at' => $format_date
+		];
+		
+		$this->Work->update('penjadwalan',$where, $data);
+
+		$this->session->set_flashdata('pesan','<div class="alert alert-success alert-message text-center" role="alert">Pekerjaan selesai !!</div>');
+
+		redirect('mitra/riwayat');
 	}
 }

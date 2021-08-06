@@ -69,17 +69,16 @@
                               echo '<td class="text-center">'. $t["Pemosting"] .'</td>';
                             } 
                             ?>
-                          <td class="text-center"><?= $t['nama']; ?></td>
+                          <td class="text-center"><?= $t['nama_pekerjaan']; ?></td>
                           <td class="text-center"><?= $t['tgl_awal']; ?></td>
                           <td class="text-center"><?= "Rp ".number_format($t['harga'],0,',','.'); ?></td>
                           
                           <?php
                             $sumUpah = $t['harga'];  
-                            $admin = 30/100;
-                            $biayaAdmin = $t['juru'] * 200000 * $admin;
-                            $total = $sumUpah + $biayaAdmin;
+                            $admin = 30/100 * 200000;
+                            $total = $sumUpah + $admin;
 
-                            echo "<td class='text-center'> 30% = Rp ". number_format($biayaAdmin,0,',','.'). "</td>";
+                            echo "<td class='text-center'> 30% = Rp ". number_format($admin,0,',','.'). "</td>";
                             echo "<td class='text-center'>Rp ". number_format($total,0,',','.')."</td>";
                           ?>
 
@@ -123,7 +122,7 @@
                           <td class="td-actions text-center">
                           <?php if($this->session->role_id == 1){?>
 
-                            <a href="<?= base_url('admin/prof_petani/'.$t['id_user']);?>" rel="tooltip" class="btn btn-info" data-toggle="tooltip" data-placement="top"  title="lihat profil pemosting">
+                            <a href="<?= base_url('admin/profil/'.$t['id_user']);?>" rel="tooltip" class="btn btn-info" data-toggle="tooltip" data-placement="top"  title="lihat profil pemosting">
                               <i class="material-icons">person</i>
                             </a>
 
@@ -135,14 +134,14 @@
                             $disabled = "disabled";
                             ?>
                               <a href="<?= base_url('petani/detail_post/'.$t['id_pekerjaan']); ?>" rel="tooltip" data-placement="top" class="btn btn-primary <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'disabled';} else {}}?>" title="Edit">
-                                <i class="material-icons">assignment</i>
+                                <i class="material-icons">edit</i>
                               </a>
 
-                              <a href="<?= base_url("petani/pay_post/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-placement="top" class="btn btn-success <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'disabled';} else {}}?>" title="Edit">
+                              <a href="<?= base_url("petani/pay_post/".$t["id_pekerjaan"]); ?>" rel="tooltip" data-placement="top" class="btn btn-success <?php for($i=0; $i<count($post); $i++){ if($post[$i]['id_pekerjaan'] == $t['id_pekerjaan']){ echo 'disabled';} else {}}?>" title="Upload">
                                 <i class="material-icons">upload</i>
                               </a>
                               
-                              <a href="<?= base_url("petani/detail_kerja/".$t['user_getid']."/".$t['id_pekerjaan']); ?>" rel="tooltip" data-placement="top" class="btn btn-primary" title="Edit" <?php if( $t['get_work'] == 0){ if($t['work_status'] == 2){ echo ''; } else { echo 'hidden'; }} else { echo '';} ?>>
+                              <a href="<?= base_url("petani/detail_kerja/".$t['user_getid']."/".$t['id_pekerjaan']); ?>" rel="tooltip" data-placement="top" class="btn btn-primary" title="Lihat Pekerja" <?php if( $t['get_work'] == 0){ if($t['work_status'] == 2){ echo ''; } else { echo 'hidden'; }} else { echo '';} ?>>
                                 <i class="material-icons">person</i>
                               </a>
 

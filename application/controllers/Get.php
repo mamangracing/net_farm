@@ -51,8 +51,7 @@ class Get extends CI_Controller{
 					];
 
 					$this->Work->save('pembayaran',$pembayaran);
-					$this->db->query("UPDATE pekerjaan SET is_posted = 2 WHERE id_pekerjaan = '$id'");
-					$this->db->query("UPDATE penjadwalan SET get_work = 1, user_getid ='$user' WHERE id = '$id'");
+					$this->db->query("UPDATE penjadwalan SET get_work = 1, is_posted = 2, user_getid ='$user' WHERE id = '$id'");
 					
 					$this->session->set_flashdata('info','<div class="alert alert-success alert-message text-center" role="alert">Pekerjaan berhasil di ambil, silahkan silahkan cek di dashboard !</div>');
 

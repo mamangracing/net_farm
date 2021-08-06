@@ -62,17 +62,16 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td><?= $row->nama; ?></td>
+                            <td><?= $row->nama_pekerjaan; ?></td>
                             <td><?= $row->tipe_kerja; ?></td>
                             <td><?= "Rp " . number_format($row->harga,0,',','.'); ?></td>
                             <?php 
-                            $by_admin = 30/100; //10% dari total uang makan+upah
+                            $by_admin = 30/100 * 200000; 
                             $sumUpah = $row->harga;
-                            $biaya_admin = $row->juru * 200000 * $by_admin;
-                            $total = $sumUpah + $biaya_admin;
+                            $total = $sumUpah + $by_admin;
 
                             ?>
-                            <td>30% = <?= "Rp " . number_format($biaya_admin,0,',','.'); ?></td>
+                            <td>30% = <?= "Rp " . number_format($by_admin,0,',','.'); ?></td>
                             <td><?= "Rp " . number_format($total,0,',','.'); ?></td>
                           </tr>
                           <tr>
@@ -93,16 +92,16 @@
                           </tr>
                           <tr>
                             <td>
-                              <img class="img-thumbnail" src="<?= base_url('assets/img/'); ?>bni.png" style="width: 50px; height: 30px;">
+                              <img class="img-thumbnail" src="<?= base_url('assets/img/'); ?>bca1.png" style="width: 50px; height: 30px;">
                             </td>
-                            <td>3645763389
+                            <td>61230076
                             </td>
                           </tr>
                           <tr>
                             <td>
                               <img class="img-thumbnail" src="<?= base_url('assets/img/'); ?>bri.png" style="width: 50px; height: 30px;">
                             </td>
-                            <td>124145467848758</td>
+                            <td>32100988</td>
                           </tr>
                         </tbody>
                       </table>

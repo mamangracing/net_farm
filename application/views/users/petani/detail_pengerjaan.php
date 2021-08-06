@@ -28,7 +28,8 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <img src="<?= base_url('assets/');?>img/images/default.jpg  ">
+                        <label class="bmd-labl-floating">Bukti Kerja</label><br>
+                        <img src="<?= base_url('assets/img/images/'.$img);?>" class="w-75" alt="Belum Upload Photo">
                       </div>
                     </div>
                   </div>
@@ -50,7 +51,7 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-floating">Panjang Ladang</label><br>
-                        <label><?= $juru.' juru' ;?></label>
+                        <label><?= $meter.' Meter' ;?></label>
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -67,7 +68,7 @@
               <div class="card card-profile">
                 <div class="card-avatar">
                   <a href="#pablo">
-                    <img class="img" src="<?= base_url('assets/'); ?>img/profile/<?= $img; ?>" />
+                    <img class="img" src="<?= base_url('assets/img/profile/'.$profil); ?>">
                   </a>
                 </div>
                 <div class="card-body">

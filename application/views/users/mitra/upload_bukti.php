@@ -38,14 +38,14 @@
                 <div class="card-body">
                   <div class="tab-content">
                     <div class="tab-pane active" id="profile">
-                      <?=  $this->session->role_id == 1 ? form_open_multipart('admin/up_bukti/'.$id_pekerjaan) : form_open_multipart('mitra/finish_work/'.$id_pekerjaan); ?>
+                      <?php if($this->session->role_id == 1){ ?> <form action="<?= base_url('admin/up_bukti/'.$id_pekerjaan);?>" method="post" enctype="multipart/form-data"> <?php } else { ?> <form action="<?= base_url('mitra/save_work/'.$id_pekerjaan); ?>" method="post" enctype="multipart/form-data"> <?php } ?>
                         <table class="table">
                           <tbody>
                             <tr>
                               <td>
                                 <div class="fileinput">
                                   <label class="bmd-label-floating"><?= $keterangan; ?></label>                        
-                                  <input type="file" class="file-input form-control" name="image" required="">
+                                  <input type="file" class="file-input form-control" name="image">
                                 </div>
                                 <button type="submit" class="btn btn-success pull-right">Upload</button>
                                 <div class="clearfix"></div>

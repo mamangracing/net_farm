@@ -28,8 +28,11 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="bmd-label-static">*Nama Pekerjaan</label>
-                        <input type="text" class="form-control" name="nama" required="">
-                        <?= form_error('nama','<small class="text-danger pl-3 alert-message">','</small>'); ?>
+                        <select class="form-control" name="work_type">
+                          <option value ="0"></option>
+                          <option value ="1">Membajak Sawah</option>
+                          <option value ="2">Mengelola Ladang</option>
+                        </select>
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -42,11 +45,16 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                       <div class="form-group">
                         <label class="bmd-label-static">*Luas Ladang</label>
-                        <input name="juru" id="juru" class="form-control" type="number" min="1" max="4" onchange="sum();" placeholder="juru">
-                        <?= form_error('juru','<small class="text-danger pl-3 alert-message">','</small>');?>
+                        <input name="meter" id="meter" class="form-control" type="number" min="1750" onchange="sum();" placeholder="Meter">
+                        <?= form_error('meter','<small class="text-danger pl-3 alert-message">','</small>');?>
+                      </div>
+                    </div>
+                    <div class="col-md-1">
+                      <div class="form-group">
+                        <input type="text" class="form-control" value="Meter" disabled>
                       </div>
                     </div>
                     <div class="col-md-1">
@@ -93,10 +101,11 @@
   //$('.alert-message').alert().delay(40000).slideUp('slow');
   
   function sum(){
-    let juru = document.getElementById('juru').value;
+    let juru = document.getElementById('meter').value;
     let admin = 30/100 * 200000;
     let harga = 200000 - admin;
-    let result = parseInt(juru) * harga;
+    let result = parseInt(juru) * 80; 
+
     document.getElementById('harga').value = result;  
 
     let number = result.toString();

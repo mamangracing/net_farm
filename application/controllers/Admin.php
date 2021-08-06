@@ -121,8 +121,8 @@ class Admin extends CI_Controller{
 		echo is_null($id) == true ? redirect(base_url()) : "";
 		
 		$this->db->set('is_posted', 1);
-		$this->db->where('id_pekerjaan',$id);
-		$this->db->update('pekerjaan');
+		$this->db->where('id',$id);
+		$this->db->update('penjadwalan');
 		$this->session->set_flashdata('pesan','
 					<div class="alert alert-success alert-with-icon alert-message" data-notify="container">
 			          <i class="material-icons" data-notify="icon">add_alert</i>
@@ -149,23 +149,23 @@ class Admin extends CI_Controller{
 
 			if($this->session->role_id == 1){
 
-				$upload = $_FILE['image']['name'];
+				$upload = $_FILES['image']['name'];
 
 				if($upload){
-
 					$config['upload_path'] = './assets/img/bukti';
-					$config['allowed_types'] = 'gif|png|jpg|jpeg';
+					$config['allowed_types'] = 'png|jpg|jpeg';
 					$config['max_size'] = '3000';
-					$config['max_width'] = '1024';
-					$config['max_height'] = '1000';
-					$config['file_name'] = 'bukti' . time();
+					$config['max_width'] = '4024';
+					$config['max_height'] = '4000';
+					$config['file_name'] = 'img_' . time();
 
 					$this->load->library('upload', $config);
 
-					if($this->upload->do_upload('userfile')){
+					if($this->upload->do_upload('image')){
 						$nm_gambar = $this->upload->data('file_name');
 					}
 				}
+
 				$where = [
 					'id_pekerjaan' => $id_pekerjaan
 				];
@@ -174,7 +174,8 @@ class Admin extends CI_Controller{
 					'id_users' => $this->session->id,
 					'status_pembayaran' => 1,
 					'tgl_upload' => date('Y-m-d'),
-					'akses' => 'Admin'
+					'akses' => 'Admin',
+					'bukti_upload' => $nm_gambar
 				];
 
 				$this->Work->update('pembayaran',$where,$data);

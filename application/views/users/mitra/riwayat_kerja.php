@@ -38,10 +38,11 @@
       								<th><b>Nama Pekerjaan</th>
                       <th><b>Tgl Mulai</b></th>
                       <th><b>Tipe Kerja</b></th>
-                      <th><b>Juru</b></th>
+                      <th><b>meter</b></th>
       								<th><b>Upah</th>
                       <th><b>Status</b></th>
                       <th><b>Pembayaran</b></th>
+                      <th style="width:50px !important;"><b>Bukti</b></th>
                       <th><b>Action</b></th>
       							</tr>
 			      				</thead>
@@ -87,10 +88,11 @@
                           <td><?= $key['nama_pekerjaan']; ?></td>
                           <td><?= $key['tgl_awal'];?></td>
                           <td><?= $key['tipe_kerja'];?></td>
-                          <td><?= $key['juru'];?></td>
+                          <td><?= $key['meter'];?></td>
                           <td><?= "Rp ". number_format($key['harga'],0,',','.'); ?></td>
                           <td><?= $status; ?></td>
                           <td><?= $pembayaran[$hitung++]['status_pembayaran'] == 0 ? 'Belum dibayar' : 'Sudah dibayar' ?></td>
+                          <td><a href="<?= base_url('assets/img/bukti/'.$pembayaran[$d]['bukti_upload']);?>"><img src="<?= base_url('assets/img/bukti/'.$pembayaran[$d]['bukti_upload']);?>" class="w-50"></a></td>  
                           <td class="td-actions">
                             <?php 
                               if(date('Y-m-d') == $key['tgl_awal']){
