@@ -93,7 +93,7 @@ class Work extends CI_Model
 		$this->db->join('pekerjaan P', 'P.id_pekerjaan = J.id');
 		$this->db->join('users U', 'on U.id_user = J.user_getid');
 		$this->db->join('pembayaran B', 'P.id_pekerjaan = B.id_pekerjaan');
-		$this->db->order_by('J.id DESC');
+		$this->db->order_by('B.status_pembayaran ASC');
 
 		if($this->session->role_id == 1){
 			$this->db->where('J.work_status', 2);
@@ -104,12 +104,12 @@ class Work extends CI_Model
 	}
 
 	public function getRiwayat_k($id = null){
-		$this->db->select('P.nama_pekerjaan, P.meter, P.harga, P.tgl_awal, P.tipe_kerja, J.user_getid ,J.work_status, J.id');	
+		$this->db->select('P.nama_pekerjaan, P.meter, P.harga, P.tgl_awal, P.tipe_kerja, J.user_getid ,J.work_status, J.id, J.get_work');	
 		$this->db->from('pekerjaan P');
 		$this->db->join('penjadwalan J', 'P.id_pekerjaan = J.id');
 		$this->db->join('users U','J.user_getid = U.id_user');
 		$this->db->where('U.id_user', $id);
-		$this->db->order_by('tgl_awal');
+		$this->db->order_by('get_work','desc');
 		$query = $this->db->get();
 		return $query->result_array();
 	}

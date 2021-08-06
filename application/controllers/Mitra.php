@@ -19,9 +19,8 @@ class Mitra extends CI_Controller{
 	{	
 		$user = $this->session->id;
 		$cek['data'] = $this->Work->getRiwayat_k($this->session->id);
-		$cek['search'] = $this->Work->show_job('penjadwalan','work_status',1);
-		$cek['pembayaran'] = $this->Work->show_job('pembayaran','user_get',$user);
-		
+		$cek['pembayaran'] = $this->db->query("SELECT * FROM pembayaran WHERE user_get ='$user' ORDER BY status_pembayaran")->result_array();
+		//var_dump($cek['pembayaran']);
 		$this->load->view('users/mitra/riwayat_kerja',$cek);
 	}
 

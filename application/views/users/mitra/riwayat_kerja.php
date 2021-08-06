@@ -91,7 +91,7 @@
                           <td><?= $key['meter'];?></td>
                           <td><?= "Rp ". number_format($key['harga'],0,',','.'); ?></td>
                           <td><?= $status; ?></td>
-                          <td><?= $pembayaran[$hitung++]['status_pembayaran'] == 0 ? 'Belum dibayar' : 'Sudah dibayar' ?></td>
+                          <td><?= $pembayaran[$d]['status_pembayaran'] == 0 ? 'Belum dibayar' : 'Sudah dibayar' ?></td>
                           <td><a href="<?= base_url('assets/img/bukti/'.$pembayaran[$d]['bukti_upload']);?>"><img src="<?= base_url('assets/img/bukti/'.$pembayaran[$d]['bukti_upload']);?>" class="w-50"></a></td>  
                           <td class="td-actions">
                             <?php 
